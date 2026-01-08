@@ -2,6 +2,8 @@
 
 This document describes how to create and manage blog posts.
 
+> **Source of truth:** `src/data/posts/server.ts`, `mdx-components.tsx`, `content/posts/`
+
 ## Post Location
 
 Posts are MDX files located at:
@@ -12,7 +14,7 @@ content/posts/[lang]/[slug]/index.mdx
 
 Where:
 - `[lang]` is `en` or `tr`
-- `[slug]` is the URL-friendly post identifier
+- `[slug]` is the URL-friendly post identifier (directory name)
 
 ### Example
 
@@ -32,7 +34,6 @@ title: "Post Title"
 description: "A short summary of the post for SEO and previews"
 date: "2024-01-15"
 permalink: "/en/my-new-post/"
-lang: "en"
 ---
 ```
 
@@ -43,15 +44,22 @@ lang: "en"
 | `title` | string | Post title (displayed in header and metadata) |
 | `description` | string | Short summary for SEO meta tags and post list |
 | `date` | string | Publication date in `YYYY-MM-DD` format |
-| `permalink` | string | Full URL path including language prefix |
-| `lang` | `"en"` \| `"tr"` | Post language |
+| `permalink` | string | URL path (will be normalized) |
+
+**Note:** The `lang` field is derived from the folder structure, not from frontmatter.
 
 ### Permalink Normalization
 
 The data layer (`src/data/posts/server.ts`) normalizes permalinks:
-- Ensures leading slash
-- Ensures trailing slash
-- Format: `/{lang}/{slug}/`
+
+```typescript
+const postSlug = rawPermalink.replace(/^\/?(tr\/)?/, "").replace(/\/$/, "");
+const permalink = `/${lang}/${postSlug}/`;
+```
+
+- Strips any existing language prefix from the raw permalink
+- Reconstructs with the correct language from the folder path
+- Ensures leading and trailing slashes
 
 ## Post Assets
 
@@ -76,23 +84,25 @@ Images are automatically optimized during build via `next-image-export-optimizer
 
 ### Videos
 
-Embed videos using the `PostVideo` component:
+Embed YouTube videos using the `PostVideo` component:
 
 ```jsx
 <PostVideo
-  src="https://www.youtube.com/embed/VIDEO_ID"
+  id="VIDEO_ID"
   title="Video title"
 />
 ```
+
+The component shows a thumbnail initially and lazy-loads the iframe on click for better performance.
 
 ## MDX Components
 
 These components are available in all MDX files:
 
-| Component | Usage |
-|-----------|-------|
-| `PostImage` | `<PostImage src="..." alt="..." />` |
-| `PostVideo` | `<PostVideo src="..." title="..." />` |
+| Component | Props | Description |
+|-----------|-------|-------------|
+| `PostImage` | `src`, `alt`, `width?`, `height?` | Optimized image with default 800x600 |
+| `PostVideo` | `id`, `title` | Lazy-loaded YouTube embed |
 
 Standard Markdown and JSX are also supported.
 
@@ -110,7 +120,6 @@ Standard Markdown and JSX are also supported.
    description: "What this post is about"
    date: "2024-01-15"
    permalink: "/en/my-new-post/"
-   lang: "en"
    ---
 
    Post content goes here...
@@ -134,13 +143,22 @@ Standard Markdown and JSX are also supported.
 To create a Turkish version of an English post:
 
 1. Create the Turkish post directory with the same or translated slug
-2. Set `lang: "tr"` and update `permalink` accordingly
+2. Update `permalink` accordingly
 3. Translate the content
 
 Posts in different languages are independent - they don't need matching slugs.
 
+**Note:** Alternate language links in metadata are generated regardless of whether a translation exists.
+
 ## Date Formatting
 
 Dates are formatted for display using `src/lib/format-date.ts`:
-- English: "January 15, 2024"
-- Turkish: "15 Ocak 2024"
+
+| Language | Format | Example |
+|----------|--------|---------|
+| English | `MMMM d, yyyy` | "January 15, 2024" |
+| Turkish | `d MMMM yyyy` | "15 Ocak 2024" |
+
+## Post Sorting
+
+Posts are automatically sorted by date (newest first) when retrieved via `getAllPosts()`.

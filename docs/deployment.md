@@ -2,6 +2,8 @@
 
 This document covers the static export configuration, build pipeline, and Vercel deployment setup.
 
+> **Source of truth:** `next.config.ts`, `package.json`, `next-sitemap.config.js`, `vercel.json`
+
 ## Static Export
 
 The site is statically exported for deployment to Vercel (or any static host).
@@ -59,6 +61,7 @@ Configuration in `next-sitemap.config.js`:
 module.exports = {
   siteUrl: "https://doganozturk.dev",
   generateRobotsTxt: true,
+  generateIndexSitemap: false,
   outDir: "out",
 };
 ```
@@ -75,44 +78,56 @@ Environment variables in `next.config.ts`:
 
 ```typescript
 env: {
-  storePicturesInWEBP: "true",
-  generateAndUseBlurImages: "true",
   nextImageExportOptimizer_imageFolderPath: "public/images",
   nextImageExportOptimizer_exportFolderPath: "out",
+  nextImageExportOptimizer_quality: "80",
+  nextImageExportOptimizer_storePicturesInWEBP: "true",
+  nextImageExportOptimizer_generateAndUseBlurImages: "true",
 }
 ```
 
 ## Vercel Configuration
 
-### Redirects
+### Routes Format
 
-`vercel.json` defines 308 (permanent) redirects for legacy English URLs:
+`vercel.json` uses the `routes` format (not `redirects`) for legacy URL redirects:
 
 ```json
 {
-  "redirects": [
+  "bunVersion": "1.x",
+  "routes": [
     {
-      "source": "/amsterdam-jsnation-2019/",
-      "destination": "/en/amsterdam-jsnation-2019/",
-      "statusCode": 308
+      "src": "/amsterdam-jsnation-2019(/.*)?",
+      "status": 308,
+      "headers": { "Location": "/en/amsterdam-jsnation-2019$1" }
     }
-    // ... more legacy redirects
   ]
 }
 ```
 
-These redirects preserve SEO for URLs that existed before the i18n routing was added.
+Key points:
+- **308 status**: Permanent redirect (preserves HTTP method)
+- **Regex capture**: `(/.*)?` captures optional trailing path
+- **Path preservation**: `$1` appends captured path to destination
+
+### Legacy Redirects
+
+All legacy English URLs (without language prefix) redirect to `/en/...`:
+
+| Legacy URL | Redirects To |
+|------------|--------------|
+| `/amsterdam-jsnation-2019/` | `/en/amsterdam-jsnation-2019/` |
+| `/web-components/` | `/en/web-components/` |
+| `/javascript-basics-hoisting/` | `/en/javascript-basics-hoisting/` |
+| ... | ... |
+
+These redirects preserve SEO for URLs that existed before i18n routing was added.
 
 ### Bun Version
 
 ```json
 {
-  "build": {
-    "env": {
-      "ENABLE_EXPERIMENTAL_COREPACK": "1"
-    }
-  },
-  "framework": null
+  "bunVersion": "1.x"
 }
 ```
 
@@ -120,12 +135,10 @@ These redirects preserve SEO for URLs that existed before the i18n routing was a
 
 ```bash
 bun dev          # Start development server (Turbopack)
-bun run lint     # Run ESLint (flat config in eslint.config.mjs)
+bun run lint     # Run ESLint (eslint .)
 bun test         # Run tests in watch mode
 bun test:ci      # Run tests once (CI mode)
 ```
-
-Note: Next.js 16 removed the `next lint` command. ESLint is now run directly via `eslint .` with flat config format.
 
 ## Deployment Workflow
 
@@ -134,3 +147,14 @@ Note: Next.js 16 removed the `next lint` command. ESLint is now run directly via
 3. Static files deployed to edge network
 
 No server runtime is required - the entire site is static HTML.
+
+## PageSpeed Analysis
+
+Run PageSpeed Insights on deployed URLs:
+
+```bash
+bun run pagespeed                    # Analyze URLs from pagespeed.urls.txt
+bun run pagespeed:generate-urls      # Regenerate URL list from posts
+```
+
+The `pagespeed.urls.txt` file contains all deployed post URLs for performance monitoring.

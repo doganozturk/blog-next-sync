@@ -2,6 +2,8 @@
 
 This document describes the routing model, MDX pipeline, data layer, and layout architecture.
 
+> **Source of truth:** `next.config.ts`, `src/app/**`, `src/data/posts/**`, `mdx-components.tsx`
+
 ## Overview
 
 This is a Next.js 16 blog with:
@@ -19,26 +21,36 @@ This is a Next.js 16 blog with:
 
 ### Static Generation
 
-Both `[lang]` and `[slug]` use `generateStaticParams()` to pre-render all routes at build time:
+Both `[lang]` and `[slug]` use `generateStaticParams()` to pre-render all routes at build time.
+
+**Language home page:**
 
 ```typescript
 // src/app/[lang]/page.tsx
 export function generateStaticParams() {
-  return LANGS.map((lang) => ({ lang }));
-}
-
-// src/app/[lang]/[slug]/page.tsx
-export async function generateStaticParams() {
-  return LANGS.flatMap((lang) =>
-    getAllPosts(lang).map((post) => ({
-      lang,
-      slug: post.slug,
-    }))
-  );
+  return [{ lang: "en" }, { lang: "tr" }];
 }
 ```
 
-Dynamic params are disabled (`dynamicParams = false`) so only pre-rendered routes are valid.
+**Post pages:**
+
+```typescript
+// src/app/[lang]/[slug]/page.tsx
+export function generateStaticParams() {
+  return getPostParams();  // Returns [{ lang, slug }, ...]
+}
+
+export const dynamicParams = false;
+```
+
+The `getPostParams()` function (from `@data/posts/server`) reads all post directories and returns params for both languages.
+
+### Metadata Generation
+
+Each page uses `generateMetadata()` for SEO:
+
+- **Language home**: Uses a `META` object keyed by language with title, description, and canonical URL
+- **Post pages**: Reads frontmatter via `getPostBySlug()` and generates OpenGraph/Twitter metadata
 
 ### Language Layout
 
@@ -54,7 +66,9 @@ MDX is configured in `next.config.ts`:
 const withMDX = createMDX({
   options: {
     remarkPlugins: ["remark-frontmatter", "remark-mdx-frontmatter"],
-    rehypePlugins: [[rehypePrettyCode, { theme: "dark-plus" }]],
+    rehypePlugins: [
+      ["rehype-pretty-code", { theme: "dark-plus", keepBackground: true }],
+    ],
   },
 });
 ```
@@ -69,8 +83,17 @@ Key plugins:
 
 | Component | Purpose |
 |-----------|---------|
-| `PostVideo` | Responsive video embeds |
-| `PostImage` | Optimized images with captions |
+| `PostVideo` | Lazy-loaded YouTube embeds with thumbnail preview |
+| `PostImage` | Optimized images via next-image-export-optimizer |
+
+### Dynamic Import
+
+Post pages dynamically import MDX content:
+
+```typescript
+const mdxModule = await import(`@content/posts/${lang}/${slug}/index.mdx`);
+Content = mdxModule.default;
+```
 
 ### Page Extensions
 
@@ -80,18 +103,36 @@ Key plugins:
 
 ### Server-Only Loading
 
-`src/data/posts/server.ts` provides functions to load posts:
+`src/data/posts/server.ts` uses the `server-only` package to ensure functions only run during build/server rendering.
+
+### API
 
 ```typescript
-getAllPosts(lang: Lang): PostFrontmatter[]  // All posts for a language
-getPostBySlug(slug: string, lang: Lang): PostFrontmatter | undefined
+getAllPosts(lang?: Lang): PostFrontmatter[]  // All posts, optionally filtered by language
+getAllSlugs(lang: Lang): string[]            // All slugs for a language
+getPostParams(): PostParams[]                // Static params for all posts
+getPostBySlug(slug: string, lang: Lang): PostData | null
+getPostByPermalink(permalink: string): PostData | null
 ```
 
-These functions:
+### Loading Process
+
 1. Read MDX files from `content/posts/[lang]/[slug]/index.mdx`
 2. Parse frontmatter with `gray-matter`
-3. Validate required fields (title, description, date, permalink, lang)
+3. Validate required fields (title, description, date, permalink)
 4. Normalize permalinks to `/{lang}/{slug}/` format
+5. Sort by date (newest first)
+
+### Permalink Normalization
+
+The raw `permalink` from frontmatter is normalized:
+
+```typescript
+const postSlug = rawPermalink.replace(/^\/?(tr\/)?/, "").replace(/\/$/, "");
+const permalink = `/${lang}/${postSlug}/`;
+```
+
+The language in the final permalink is determined by the folder being processed, not the value in frontmatter.
 
 ### Types
 
@@ -106,6 +147,16 @@ interface PostFrontmatter {
   date: string;
   permalink: string;
   lang: Lang;
+}
+
+interface PostData {
+  frontmatter: PostFrontmatter;
+  slug: string;
+  content: string;
+}
+
+interface PostParams {
+  lang: Lang;
   slug: string;
 }
 ```
@@ -114,28 +165,32 @@ interface PostFrontmatter {
 
 ### Root Layout (`src/app/layout.tsx`)
 
-- Sets base metadata (title, description, icons)
-- Minimal wrapper, delegates to language layout
+- Sets base metadata (title, description, icons, manifest)
+- Minimal wrapper that returns `children` directly
+- Does **not** render `<html>` or `<body>` (delegated to language layout)
 
 ### Language Layout (`src/app/[lang]/layout.tsx`)
 
-- Sets `<html lang={lang}>` for accessibility/SEO
-- Wraps with `ThemeProvider` (next-themes)
-- Includes `ThemeColorMeta` for dynamic theme color
+- Renders `<html lang={lang}>` for accessibility/SEO
+- Imports global CSS (`globals.css`)
+- Wraps with `ThemeProvider` (next-themes, attribute="class")
+- Includes `ThemeColorMeta` for dynamic browser chrome color
 - Adds Vercel Analytics and Speed Insights
 
 ## Path Aliases
 
 Configured in `tsconfig.json`:
 
-```
-~ or @     → ./src/*
-@content   → ./content/*
-@data      → ./src/data/*
-@lib       → ./src/lib/*
-```
+| Alias | Path |
+|-------|------|
+| `~/*` or `@/*` | `./src/*` |
+| `@content/*` | `./content/*` |
+| `@data/*` | `./src/data/*` |
+| `@lib/*` | `./src/lib/*` |
 
-Note: `~`, `@`, and `@content` are also configured in Turbopack's `resolveAlias` for bundler compatibility.
+**Turbopack configuration** (`next.config.ts`):
+
+Only `~`, `@`, and `@content` are configured in Turbopack's `resolveAlias`. The `@data` and `@lib` aliases are TypeScript-only and resolved by the TS compiler.
 
 ## Key Files
 
@@ -143,8 +198,9 @@ Note: `~`, `@`, and `@content` are also configured in Turbopack's `resolveAlias`
 |---------|----------|
 | Root redirect | `src/app/page.tsx` |
 | Language layout | `src/app/[lang]/layout.tsx` |
+| Language home | `src/app/[lang]/page.tsx` |
 | Post page | `src/app/[lang]/[slug]/page.tsx` |
 | Post data layer | `src/data/posts/server.ts` |
+| Post types | `src/data/posts/types.ts` |
 | MDX components | `mdx-components.tsx` |
 | Next.js config | `next.config.ts` |
-| ESLint config | `eslint.config.mjs` |
