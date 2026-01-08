@@ -41,7 +41,7 @@
     "not dead"
   ],
   "devDependencies": {
-    "@doganozturk/pagespeed-cli": "workspace:^",
+    "@doganozturk/pagespeed-cli": "^1.0.0",
     "@eslint/eslintrc": "^3.3.3",
     "@eslint/js": "^9.39.2",
     "@happy-dom/global-registrator": "^20.0.11",
