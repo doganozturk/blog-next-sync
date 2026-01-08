@@ -1,0 +1,94 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   POST SUMMARY LIST ITEM — Individual blog post preview card
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.postSummaryListItem {
+  display: block;
+  position: relative;
+  padding: var(--space-6) 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.postSummaryListItem:first-of-type {
+  padding-top: 0;
+}
+
+.postSummaryListItem:last-of-type {
+  border-bottom: none;
+}
+
+.postSummaryListItem:hover .title {
+  color: var(--accent-color);
+}
+
+.postSummaryListItem:hover .arrow {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Title */
+.title {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-weight: var(--font-weight-normal);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  color: var(--text-color);
+  transition: color var(--transition-fast);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.arrow {
+  display: inline-block;
+  font-size: var(--text-lg);
+  opacity: 0;
+  transform: translateX(-8px);
+  transition:
+    opacity var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+/* Date */
+.date {
+  margin-top: var(--space-3);
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-secondary);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+}
+
+/* Summary */
+.summary {
+  margin-top: var(--space-4);
+  font-size: var(--text-base);
+  line-height: var(--leading-relaxed);
+  color: var(--text-secondary);
+}
+
+/* Staggered animation for list items */
+.postSummaryListItem {
+  animation: fadeInUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+.postSummaryListItem:nth-child(1) { animation-delay: 0.1s; }
+.postSummaryListItem:nth-child(2) { animation-delay: 0.15s; }
+.postSummaryListItem:nth-child(3) { animation-delay: 0.2s; }
+.postSummaryListItem:nth-child(4) { animation-delay: 0.25s; }
+.postSummaryListItem:nth-child(5) { animation-delay: 0.3s; }
+.postSummaryListItem:nth-child(6) { animation-delay: 0.35s; }
+.postSummaryListItem:nth-child(7) { animation-delay: 0.4s; }
+.postSummaryListItem:nth-child(8) { animation-delay: 0.45s; }
+.postSummaryListItem:nth-child(n+9) { animation-delay: 0.5s; }
+
+@media (min-width: 768px) {
+  .postSummaryListItem {
+    padding: var(--space-8) 0;
+  }
+
+  .title {
+    font-size: var(--text-3xl);
+  }
+}

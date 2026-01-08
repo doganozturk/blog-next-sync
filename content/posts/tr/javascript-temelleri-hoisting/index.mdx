@@ -1,0 +1,260 @@
+---
+title: "JavaScript Temelleri: Hoisting"
+description: "Zingat'ta yazılımcılarla gerçekleştirdiğimiz iş görüşmelerinde sıklıkla karşılaştığımız problemlerden biri adayların kullandıkları dilin temel unsurlarıyla ilişkilerinin bir miktar kopuk olması. Çoğu genç arkadaş güncel web framework'leriyle (React, Vue vs.) yahut JS temelli cross-platform geliştirme ortamlarıyla (React-Native, Ionic vs.) ilgilenmiş oluyor; ancak JavaScript'in hikayesinden ya da dil ve dilin çalıştığı ortamların gerçeklerinden uzak durumdalar."
+permalink: "/javascript-temelleri-hoisting/"
+date: "2020-03-17"
+lang: "tr"
+---
+
+import { formatDate, Locale } from "@lib/format-date";
+
+export const title = "JavaScript Temelleri: Hoisting";
+export const date = "2020-03-17";
+
+# {title}
+
+<p>{formatDate(date, Locale.tr)}</p>
+
+_\* Bu makale [İngilizce](/javascript-basics-hoisting/) olarak da okunabilir._
+
+Zingat'ta yazılımcılarla gerçekleştirdiğimiz iş görüşmelerinde sıklıkla karşılaştığımız problemlerden biri adayların kullandıkları dilin temel unsurlarıyla ilişkilerinin bir miktar kopuk olması. Çoğu genç arkadaş güncel web framework'leriyle (React, Vue vs.) yahut JS temelli cross-platform geliştirme ortamlarıyla (React-Native, Ionic vs.) ilgilenmiş oluyor; ancak JavaScript'in hikayesinden ya da dil ve dilin çalıştığı ortamların gerçeklerinden uzak durumdalar.
+
+Bu konuda hem bir kaynak üretmek, hem de bu minvalde kendi bilgilerimi derleyip toplamak ve biraz da kişisel bir referans noktası oluşturmak adına yeni bir yazı dizisine başlamayı uygun gördüm. Okuduğum, izlediğim kaynaklardan edindiğim bilgileri kendimce düzenli bir biçimde sunmak adına böyle bir serüvene çıkıyorum.
+
+Burada anlatacaklarım İnternet'te hali hazırda bulabileceğiniz şeyler, Türkçe ve İngilizce bu konularda söylenmiş pek çok şey var. Haliyle uzun süredir JavaScript'le geliştirme yapanlar burada yazılanları zaten biliyor olacaklar; fakat özellikle dili öğrenmeye yeni başlamış yahut dili kullanarak iş geliştirebilen -lakin daha da derinleşmek isteyenler için güzel bir başlangıç noktası olabilir bu yazı dizisi.
+
+JavaScript motoru bir kod parçacığını çalıştırırken bazı aşamalardan geçirir. Bunları temel olarak:
+
+1. Yaratım fazı (_creation phase_)
+2. Yürütme fazı (_execution phase_)
+
+olarak ifade edebiliriz. Yaratım fazı aşamasında JavaScript motoru bize _global_ objeyi ve _this_ anahtar kelimesini verir. Tarayıcı ortamı için _global_, _window_ objesidir. _this_ ayrı bir konu, kendisini bilahare inceleyeceğiz. Bunlar, _global execution context_'in oluşması sonucu elimizde olanlar aslında. Kullandığınız tarayıcıya boş bir `.js` dosyası verip geliştirici konsolunda _global_ (_window_) ve _this_ ifadelerini yazdırmayı deneyin, dosyanız boş olmasına rağmen bunlara erişiminiz olduğunu göreceksiniz.
+
+Yaratım fazında gerçekleşen bir durum daha var. Bu yazının da konusu olan _hoisting_ (yukarı kaldırma/çekme) tam da bu noktada gerçekleşiyor. Aşağıdaki gibi bir kod parçacığımız olsun:
+
+```javascript
+console.log(person);
+console.log(greetPerson);
+
+var person = "ahmet";
+
+function greetPerson() {
+  console.log("Hello " + person);
+}
+```
+
+JavaScript'te diğer birçok programlama dilinden farklı olarak _person_ ve _greetPerson_ değişkenlerinin kodun başında konsola yazılmalarını sağlayan fonksiyonları çağırmak herhangi bir hataya sebep olmaz. _Hoisting_ sonucu değişken deklarasyonları (_variable_ _declaration_) ve fonksiyon deklarasyonları (_function declaration_) _hoist_ edilir. Aşağıdaki gibi bir durum oluştuğunu anlayışımızı kolaylaştırmak adına varsayabiliriz:
+
+```javascript
+var person = undefined;
+
+function greetPerson() {
+  console.log("Hello " + person);
+}
+
+console.log(person); // undefined
+console.log(greetPerson); // function greetPerson()
+
+person = "ahmet";
+```
+
+Tabii aslında olan bu değil. JavaScript motoru yaratım fazında bütün kod bloğunun üzerinden geçer, _global execution context_ ile varsa _function execution context_'ler (JavaScript'te her bir fonksiyonun kendi yürütme konteksti bulunur) içerisindeki değişken ve fonksiyon deklarasyonlarını hafızaya (_memory_) kaydeder.
+
+Peki böyle bir ihtiyaç neden hasıl olmuş? Benim de bu yazıyı hazırlarken rast geldiğim, Brendan Eich'a ithaf edilen şu cümleyi paylaşmak isterim:
+
+> "var hoisting was thus [an] unintended consequence of function hoisting, no block scope, [and] JS as a 1995 rush job."
+
+Yine dönüp dolaşıp JavaScript'in şahsına münhasır dizaynından kaynaklı bir çıktı gibi duruyor.
+
+_Hoisting_ konusunu anlama gayretimizde dikkat edilecek bazı noktalar var, bunları örnekler üzerinden inceleyelim:
+
+```javascript
+console.log(person);
+console.log(greetPerson);
+
+var person = "ahmet";
+
+(function greetPerson() {
+  console.log("Hello " + person);
+});
+```
+
+Bu kodu çalıştırdığımızda _person_ değişkeni için yukarıda anlattıklarımız halen geçerli; fakat _greetPerson_ fonksiyon deklarasyonu artık bir _IIFE_ (_Immediately Invoked Function Expression_). Bu durumda ortada bir deklarasyon yok aslında. Haliyle JavaScript motoru bu kodun üzerinden geçerken _hoist_ edilen sadece _person_ değişkeni olacak.
+
+```javascript
+var person = undefined;
+
+console.log(person); // undefined
+console.log(greetPerson); // ReferenceError: greetPerson is not defined
+
+person = "ahmet";
+
+(function greetPerson() {
+  console.log("Hello " + person);
+});
+```
+
+Şimdi de sadece _variable initialization_ durumunu ele alalım:
+
+```javascript
+console.log(person);
+
+person = "ahmet";
+```
+
+Kodu çalıştırdığımızda hata alacağız. Başta dediğimiz gibi, sadece deklarasyonlar _hoist_ ediliyor, burada bir deklarasyon durumu mevzu bahis değil.
+
+```javascript
+console.log(person); // ReferenceError: person is not defined
+
+person = "ahmet";
+```
+
+Benzeri bir durum da fonksiyon ifadeleri (_function expression_) nezdinde gerçekleşiyor:
+
+```javascript
+console.log(person);
+console.log(greetPerson);
+
+var person = "ahmet";
+
+var greetPerson = function () {
+  console.log("Hello " + person);
+};
+```
+
+Bu sefer çıktımız aşağıdaki gibi olacak; zira bu fonksiyon ifadesi bu bağlamda bir değişken deklarasyonu olmakta. _Hoisting_'in çalışma prensibi gereğince de bu bağlamda ele alınmakta.
+
+```javascript
+var person = undefined;
+var greetPerson = undefined;
+
+console.log(person); // undefined
+console.log(greetPerson); // undefined
+
+person = "ahmet";
+
+greetPerson = function () {
+  console.log("Hello " + person);
+};
+```
+
+Örneğimizi biraz daha geliştirip bu sefer işin içine _function execution context_'leri de katalım:
+
+```javascript
+console.log(person);
+console.log(greetPerson);
+console.log(greetPerson());
+
+var person = "ahmet";
+
+function greetPerson() {
+  console.log("Hello " + person);
+
+  var person = "mehmet";
+}
+```
+
+Dikkat etmemiz gereken nokta _greetPerson_ fonksiyonu içerisinde de aynı _global execution context_ içerisinde olduğu gibi _hoisting_ gerçekleşiyor ve JavaScript motoru `var person = 'mehmet';` satırını gördüğü anda _person_ değişkeni için hafızada yer arıyor (_memory allocation_). JavaScript'teki kapsam zinciri (_scope chain_) işleyişi sonucu _person_ değişkeninin davranışına da dikkatinizi çekmiş olayım.
+
+```javascript
+var person = undefined;
+
+function greetPerson() {
+  var person = undefined;
+
+  console.log("Hello " + person);
+
+  person = "mehmet";
+}
+
+console.log(person); // undefined
+console.log(greetPerson); // function greetPerson()
+console.log(greetPerson()); // 'Hello undefined'
+
+person = "ahmet";
+```
+
+Bir diğer örnek:
+
+```javascript
+console.log(person);
+
+var person = "ahmet";
+var person = "mehmet";
+```
+
+_Hoisting_ gerçekleştiğinde şöyle olacağını varsayabiliriz:
+
+```javascript
+var person = undefined;
+
+console.log(person); // undefined
+
+person = "ahmet";
+person = "mehmet";
+```
+
+Değişken deklarasyonları için şu ana kadar gördüğümüz örneklerden farklı bir şey yok gibi duruyor, peki fonksiyon deklarasyonları için durum ne?
+
+```javascript
+console.log(greetPerson());
+
+function greetPerson() {
+  console.log("Hello");
+}
+
+function greetPerson() {
+  console.log("Hi");
+}
+```
+
+JavaScript motoru ilk _greetPerson_ deklarasyonunu gördüğü anda bunu _hoist_ edecek, ardından ikinci fonksiyon deklarasyonunu görecek ve bunu da aynı şekilde _hoist_ edecek. Hafızadaki _greetPerson_ fonksiyonunun üzerine ikinci fonksiyonu yazacak.
+
+```javascript
+function greetPerson() {
+  console.log("Hi");
+}
+
+console.log(greetPerson()); // 'Hi'
+
+function greetPerson() {
+  console.log("Hello");
+}
+```
+
+Son olarak da ECMAScript 2015 ile birlikte hayatımıza giren _let_ ve _const_ anahtar kelimelerinin _hoisting_ durumundaki davranışlarına bakalım:
+
+```javascript
+console.log(person);
+console.log(greetPerson);
+console.log(greetPerson());
+
+const person = "ahmet";
+
+function greetPerson() {
+  console.log("Hello " + person);
+
+  let person = "mehmet";
+}
+```
+
+Aslında _let_, _const_, _var_, _class_ ve _function_ anahtar kelimeleri _hoist_ ediliyor; fakat _initialization_ aşamasında oluşan farklılıktan dolayı _let_ ve _const_'un bu şekilde kullanımı _ReferenceError_ oluşmasına yol açıyor. _let_/_const_ ile deklare edilen bir değişken ilgili ifade (_statement_) koşulana kadar başlatılmamış (_uninitialized_) durumda olurken, _var_ ile deklare edilen bir değişken _undefined_ primitifi ile başlatılmış da oluyor aynı zamanda.
+
+```javascript
+console.log(person); // ReferenceError: person is not defined
+console.log(greetPerson);
+console.log(greetPerson());
+
+const person = "ahmet";
+
+function greetPerson() {
+  console.log("Hello " + person);
+
+  let person = "mehmet";
+}
+```
+
+İlk konsol ifadesini kaldırırsak bu sefer _let_ sebepli aynı hatayı _greetPerson_ fonksiyonunun çalıştırılması dolayısıyla alacağız.
+
+_\* Bu yazı ilk olarak [labs.zingat.com](https://labs.zingat.com) adresinde belirtilen tarihte yayımlanmıştır._

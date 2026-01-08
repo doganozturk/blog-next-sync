@@ -1,0 +1,282 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   POST PAGE — Article typography and content styling
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.post {
+  margin-top: var(--space-12);
+  margin-bottom: var(--space-10);
+  font-family: var(--font-body);
+  line-height: var(--leading-relaxed);
+  animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) both;
+
+  /* Code block offset for list items: list-padding + li-padding + container-padding */
+  --code-list-offset: calc(var(--space-4) + var(--space-5) + var(--container-padding));
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   HEADINGS
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.post h1 {
+  font-family: var(--font-display);
+  font-size: var(--text-3xl);
+  font-weight: var(--font-weight-normal);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  color: var(--text-color);
+}
+
+.post h1 + p {
+  margin-top: var(--space-3);
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-secondary);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+}
+
+.post h2 {
+  margin-top: var(--space-16);
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-weight: var(--font-weight-normal);
+  line-height: var(--leading-snug);
+  letter-spacing: var(--tracking-tight);
+  color: var(--text-color);
+}
+
+.post h3 {
+  margin-top: var(--space-10);
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: var(--font-weight-normal);
+  line-height: var(--leading-snug);
+  color: var(--text-color);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   PARAGRAPHS & TEXT
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.post p {
+  margin-top: var(--space-6);
+  font-size: var(--text-base);
+  color: var(--text-secondary);
+}
+
+.post hr + p {
+  margin-top: var(--space-10);
+}
+
+.post a {
+  color: var(--accent-color);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  transition:
+    color var(--transition-fast),
+    text-decoration-color var(--transition-fast);
+}
+
+.post a:hover {
+  color: var(--accent-hover);
+  text-decoration-color: transparent;
+}
+
+.post strong {
+  font-weight: var(--font-weight-medium);
+  color: var(--text-color);
+}
+
+.post em {
+  font-style: italic;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   LISTS
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.post ul,
+.post ol {
+  margin-top: var(--space-6);
+  padding-left: var(--space-4);
+  color: var(--text-secondary);
+}
+
+.post ul {
+  list-style: none;
+}
+
+.post ol {
+  list-style: decimal;
+  padding-left: var(--space-8);
+}
+
+.post ul li::before {
+  content: "—";
+  position: absolute;
+  left: calc(-1 * var(--space-5));
+  color: var(--accent-color);
+}
+
+.post ol li {
+  padding-left: 0;
+}
+
+.post li {
+  position: relative;
+  margin-top: var(--space-3);
+  padding-left: var(--space-5);
+  font-size: var(--text-base);
+}
+
+.post li pre,
+.post li [data-rehype-pretty-code-figure] {
+  margin-left: calc(-1 * var(--code-list-offset));
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   CODE BLOCKS
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.post [data-rehype-pretty-code-figure],
+.post pre {
+  margin: var(--space-8) calc(-1 * var(--container-padding)) 0;
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.post [data-rehype-pretty-code-figure] pre,
+.post pre {
+  padding: var(--space-5) var(--container-padding);
+  background-color: var(--code-bg);
+  overflow-x: auto;
+  font-size: var(--text-sm);
+  line-height: var(--leading-relaxed);
+}
+
+.post [data-rehype-pretty-code-figure] pre {
+  margin: 0;
+  border: none;
+}
+
+.post [data-rehype-pretty-code-figure] code,
+.post pre code {
+  font-family: var(--font-code);
+  font-size: inherit;
+  line-height: inherit;
+  color: var(--color-code-text);
+}
+
+/* Inline code */
+.post p > code,
+.post li > code {
+  padding: var(--space-1) var(--space-2);
+  font-family: var(--font-code);
+  font-size: 0.9em;
+  color: var(--accent-color);
+  background-color: var(--accent-subtle);
+  border-radius: var(--radius-sm);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   BLOCKQUOTES
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.post blockquote {
+  margin-top: var(--space-8);
+  padding: var(--space-5) var(--space-6);
+  font-style: italic;
+  color: var(--text-secondary);
+  background-color: var(--bg-elevated);
+  border-left: 3px solid var(--accent-color);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+
+.post blockquote p {
+  margin-top: 0;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   HORIZONTAL RULES
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.post hr {
+  margin-top: var(--space-12);
+  height: 1px;
+  background-color: var(--border-color);
+  border: none;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   IMAGES
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.post img {
+  display: block;
+  max-width: calc(100% + 2 * var(--container-padding));
+  width: calc(100% + 2 * var(--container-padding));
+  height: auto;
+  margin: var(--space-8) calc(-1 * var(--container-padding)) 0;
+  border-radius: 0;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   RESPONSIVE
+   ───────────────────────────────────────────────────────────────────────────── */
+
+@media (min-width: 768px) {
+  .post {
+    /* Desktop: list-padding + li-padding (no container offset needed) */
+    --code-list-offset: calc(var(--space-6) + var(--space-6));
+  }
+
+  .post h1 {
+    font-size: var(--text-4xl);
+  }
+
+  .post h2 {
+    font-size: var(--text-3xl);
+  }
+
+  .post ul,
+  .post ol {
+    padding-left: var(--space-6);
+  }
+
+  .post ol {
+    padding-left: var(--space-10);
+  }
+
+  .post ul li::before {
+    left: calc(-1 * var(--space-6));
+  }
+
+  .post li {
+    padding-left: var(--space-6);
+  }
+
+  .post [data-rehype-pretty-code-figure],
+  .post pre {
+    margin: var(--space-8) 0 0 0;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-color);
+  }
+
+  .post [data-rehype-pretty-code-figure] pre,
+  .post pre {
+    padding: var(--space-6);
+    border-radius: var(--radius-md);
+  }
+
+  .post [data-rehype-pretty-code-figure] pre {
+    border: none;
+  }
+
+  .post img {
+    max-width: 100%;
+    width: 100%;
+    margin: var(--space-8) 0 0 0;
+    border-radius: var(--radius-md);
+  }
+}

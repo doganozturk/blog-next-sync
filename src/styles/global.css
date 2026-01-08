@@ -1,0 +1,275 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   GLOBAL STYLES — Editorial Brutalism meets Swiss Precision
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   BASE RESET
+   ───────────────────────────────────────────────────────────────────────────── */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  height: 100%;
+  height: -webkit-fill-available;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  color-scheme: light dark;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  min-height: 100%;
+  min-height: -webkit-fill-available;
+  background-color: var(--color-bg-light);
+  transition: background-color var(--transition-theme);
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: var(--color-bg-dark);
+  }
+}
+
+html.light body {
+  background-color: var(--color-bg-light);
+}
+
+html.dark body {
+  background-color: var(--color-bg-dark);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   LINKS
+   ───────────────────────────────────────────────────────────────────────────── */
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: color var(--transition-fast), opacity var(--transition-fast);
+}
+
+a:hover {
+  color: var(--color-accent);
+}
+
+a:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   THEME CONTAINER
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.theme-container {
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
+
+  /* Typography defaults */
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  font-weight: var(--font-weight-normal);
+  line-height: var(--leading-relaxed);
+  letter-spacing: var(--tracking-normal);
+
+  /* Theme variables (defaults) */
+  color: var(--text-color);
+  background-color: var(--bg-color);
+
+  /* Safe area padding */
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+
+  /* Smooth theme transitions */
+  transition:
+    color var(--transition-theme),
+    background-color var(--transition-theme);
+}
+
+/* Light Theme */
+html.light .theme-container {
+  --bg-color: var(--color-bg-light);
+  --bg-elevated: var(--color-bg-elevated-light);
+  --text-color: var(--color-text-light);
+  --text-secondary: var(--color-text-secondary-light);
+  --text-muted: var(--color-text-muted-light);
+  --border-color: var(--color-border-light);
+  --code-bg: var(--color-code-bg-light);
+  --accent-subtle: var(--color-accent-subtle);
+  --accent-color: var(--color-accent-light);
+  --accent-hover: var(--color-accent-hover-light);
+  color-scheme: light;
+}
+
+/* Dark Theme */
+html.dark .theme-container {
+  --bg-color: var(--color-bg-dark);
+  --bg-elevated: var(--color-bg-elevated-dark);
+  --text-color: var(--color-text-dark);
+  --text-secondary: var(--color-text-secondary-dark);
+  --text-muted: var(--color-text-muted-dark);
+  --border-color: var(--color-border-dark);
+  --code-bg: var(--color-code-bg-dark);
+  --accent-subtle: var(--color-accent-subtle-dark);
+  --accent-color: var(--color-accent);
+  --accent-hover: var(--color-accent-hover);
+  color-scheme: dark;
+}
+
+/* System preference fallbacks */
+@media (prefers-color-scheme: light) {
+  .theme-container {
+    --bg-color: var(--color-bg-light);
+    --bg-elevated: var(--color-bg-elevated-light);
+    --text-color: var(--color-text-light);
+    --text-secondary: var(--color-text-secondary-light);
+    --text-muted: var(--color-text-muted-light);
+    --border-color: var(--color-border-light);
+    --border-subtle: var(--color-border-subtle-light);
+    --code-bg: var(--color-code-bg-light);
+    --accent-subtle: var(--color-accent-subtle);
+    --accent-color: var(--color-accent-light);
+    --accent-hover: var(--color-accent-hover-light);
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .theme-container {
+    --bg-color: var(--color-bg-dark);
+    --bg-elevated: var(--color-bg-elevated-dark);
+    --text-color: var(--color-text-dark);
+    --text-secondary: var(--color-text-secondary-dark);
+    --text-muted: var(--color-text-muted-dark);
+    --border-color: var(--color-border-dark);
+    --border-subtle: var(--color-border-subtle-dark);
+    --code-bg: var(--color-code-bg-dark);
+    --accent-subtle: var(--color-accent-subtle-dark);
+    --accent-color: var(--color-accent);
+    --accent-hover: var(--color-accent-hover);
+  }
+}
+
+@supports (min-height: 100dvh) {
+  .theme-container {
+    min-height: 100dvh;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   CONTAINER
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.container {
+  width: 100%;
+  max-width: var(--max-width);
+  display: flex;
+  flex-direction: column;
+  padding: 0 var(--container-padding);
+}
+
+@media (min-width: 768px) {
+  .container {
+    padding: 0 var(--space-6);
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   MAIN CONTENT
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.main {
+  margin-top: var(--space-16);
+  animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) both;
+  animation-delay: 0.1s;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   ANIMATIONS
+   ───────────────────────────────────────────────────────────────────────────── */
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInFromLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   SELECTION
+   ───────────────────────────────────────────────────────────────────────────── */
+
+::selection {
+  background-color: var(--color-accent);
+  color: white;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   SCROLLBAR (Webkit)
+   ───────────────────────────────────────────────────────────────────────────── */
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--text-muted);
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}

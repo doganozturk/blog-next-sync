@@ -1,0 +1,8 @@
+/* rehype-pretty-code wraps code in <figure>, reset its margin */
+[data-rehype-pretty-code-figure] {
+  margin: 0;
+}
+
+[data-rehype-pretty-code-figure] pre {
+  margin: 0;
+}

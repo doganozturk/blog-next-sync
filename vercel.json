@@ -1,0 +1,51 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "bunVersion": "1.x",
+  "routes": [
+    {
+      "src": "/amsterdam-jsnation-2019(/.*)?",
+      "status": 308,
+      "headers": { "Location": "/en/amsterdam-jsnation-2019$1" }
+    },
+    {
+      "src": "/cross-platform-development-react-native-web(/.*)?",
+      "status": 308,
+      "headers": { "Location": "/en/cross-platform-development-react-native-web$1" }
+    },
+    {
+      "src": "/how-do-we-test-our-front-end-applications-in-trendyol-go-part-2(/.*)?",
+      "status": 308,
+      "headers": { "Location": "/en/how-do-we-test-our-front-end-applications-in-trendyol-go-part-2$1" }
+    },
+    {
+      "src": "/javascript-basics-hoisting(/.*)?",
+      "status": 308,
+      "headers": { "Location": "/en/javascript-basics-hoisting$1" }
+    },
+    {
+      "src": "/micro-frontends-architecture-with-webpack-module-federation-part-2(/.*)?",
+      "status": 308,
+      "headers": { "Location": "/en/micro-frontends-architecture-with-webpack-module-federation-part-2$1" }
+    },
+    {
+      "src": "/of-sharks-network-cables-and-the-end-of-coding(/.*)?",
+      "status": 308,
+      "headers": { "Location": "/en/of-sharks-network-cables-and-the-end-of-coding$1" }
+    },
+    {
+      "src": "/testing-google-maps-and-websockets-with-cypress(/.*)?",
+      "status": 308,
+      "headers": { "Location": "/en/testing-google-maps-and-websockets-with-cypress$1" }
+    },
+    {
+      "src": "/understanding-decorators-through-basic-concepts-of-expressjs(/.*)?",
+      "status": 308,
+      "headers": { "Location": "/en/understanding-decorators-through-basic-concepts-of-expressjs$1" }
+    },
+    {
+      "src": "/web-components(/.*)?",
+      "status": 308,
+      "headers": { "Location": "/en/web-components$1" }
+    }
+  ]
+}

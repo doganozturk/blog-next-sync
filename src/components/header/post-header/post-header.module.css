@@ -1,0 +1,28 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   POST HEADER — Header for blog post pages with back navigation
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.backLink {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-secondary);
+  letter-spacing: var(--tracking-wide);
+  transition: color var(--transition-fast);
+}
+
+.backLink:hover {
+  color: var(--accent-color);
+}
+
+.backArrow {
+  display: inline-block;
+  transition: transform var(--transition-fast);
+}
+
+.backLink:hover .backArrow {
+  transform: translateX(-4px);
+}
