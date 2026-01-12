@@ -1,6 +1,6 @@
 import { describe, expect, it, mock } from "bun:test";
 import { render, screen } from "@testing-library/react";
-import { Header, HeaderType } from "./header";
+import { Header, HeaderType } from "@/components/header/header";
 
 // Mock next-themes for ThemeSwitcher
 mock.module("next-themes", () => ({

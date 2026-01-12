@@ -1,6 +1,6 @@
 import { describe, expect, it, mock, beforeEach } from "bun:test";
 import { render } from "@testing-library/react";
-import { ThemeColorMeta } from "./theme-color-meta";
+import { ThemeColorMeta } from "@/components/theme-color-meta/theme-color-meta";
 
 // Mock next-themes
 let mockResolvedTheme: string | undefined = "light";

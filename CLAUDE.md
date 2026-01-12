@@ -60,7 +60,33 @@ bun run pagespeed    # Run PageSpeed analysis on blog URLs
 
 ## Testing
 
-Tests use Bun's native test runner with @testing-library/react. Test files are colocated with source files using `*.test.ts` naming convention.
+Tests use Bun's native test runner with @testing-library/react. All tests are located in the `test/` folder, mirroring the `src/` structure:
+
+```
+test/
+├── setup.ts              # Test setup and mocks
+├── happydom.ts           # HappyDOM registration
+├── css-modules.ts        # CSS modules plugin
+├── components/           # Component tests
+│   ├── footer.test.tsx
+│   ├── header/
+│   │   ├── header.test.tsx
+│   │   ├── main-header.test.tsx
+│   │   └── post-header.test.tsx
+│   ├── post-image.test.tsx
+│   ├── post-summary-list/
+│   │   ├── post-summary-list.test.tsx
+│   │   └── post-summary-list-item.test.tsx
+│   ├── post-video.test.tsx
+│   ├── theme-color-meta.test.tsx
+│   └── theme-switcher.test.tsx
+├── data/posts/           # Data layer tests
+│   ├── server.test.ts
+│   ├── server-errors.test.ts
+│   └── types.test.ts
+└── lib/
+    └── format-date.test.ts
+```
 
 ## CI/CD
 

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "bun:test";
 import { render, screen } from "@testing-library/react";
-import { PostSummaryListItem } from "./post-summary-list-item";
+import { PostSummaryListItem } from "@/components/post-summary-list/post-summary-list-item/post-summary-list-item";
 
 describe("PostSummaryListItem", () => {
   const defaultProps = {

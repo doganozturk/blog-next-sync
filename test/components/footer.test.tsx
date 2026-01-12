@@ -1,6 +1,6 @@
 import { describe, expect, it } from "bun:test";
 import { render, screen } from "@testing-library/react";
-import { Footer } from "./footer";
+import { Footer } from "@/components/footer/footer";
 
 describe("Footer", () => {
   it("renders all 4 social links", () => {

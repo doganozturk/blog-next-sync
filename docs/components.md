@@ -192,8 +192,7 @@ All components use CSS Modules:
 ```
 component-name/
 ├── component-name.tsx
-├── component-name.module.css
-└── component-name.test.tsx
+└── component-name.module.css
 ```
 
 Import styles as:
@@ -202,12 +201,6 @@ Import styles as:
 import styles from "./component-name.module.css";
 ```
 
-## Testing Pattern
+## Testing
 
-Components have co-located test files using:
-
-- Bun's native test runner
-- `@testing-library/react`
-- `@testing-library/jest-dom` matchers
-
-See [testing.md](./testing.md) for test setup details.
+Component tests are located in `test/components/`, mirroring the `src/components/` structure. See [testing.md](./testing.md) for test setup details.

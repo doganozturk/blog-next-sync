@@ -1,6 +1,6 @@
 import { describe, expect, it, mock, beforeEach } from "bun:test";
 import { render, screen, fireEvent } from "@testing-library/react";
-import { ThemeSwitcher } from "./theme-switcher";
+import { ThemeSwitcher } from "@/components/theme-switcher/theme-switcher";
 
 // Mock next-themes
 const mockSetTheme = mock(() => {});

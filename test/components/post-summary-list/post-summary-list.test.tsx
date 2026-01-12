@@ -1,7 +1,7 @@
 import { describe, expect, it } from "bun:test";
 import { render, screen } from "@testing-library/react";
-import { PostSummaryList } from "./post-summary-list";
-import type { PostSummary } from "./post-summary-list-item/post-summary-list-item";
+import { PostSummaryList } from "@/components/post-summary-list/post-summary-list";
+import type { PostSummary } from "@/components/post-summary-list/post-summary-list-item/post-summary-list-item";
 
 const mockPosts: PostSummary[] = [
   {

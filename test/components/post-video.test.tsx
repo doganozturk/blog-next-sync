@@ -1,6 +1,6 @@
 import { describe, expect, it } from "bun:test";
 import { render, screen, fireEvent } from "@testing-library/react";
-import { PostVideo } from "./post-video";
+import { PostVideo } from "@/components/post-video/post-video";
 
 describe("PostVideo", () => {
   const defaultProps = {

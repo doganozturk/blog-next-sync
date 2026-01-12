@@ -1,5 +1,5 @@
 import { describe, expect, it } from "bun:test";
-import { isLang, LANGS } from "./types";
+import { isLang, LANGS } from "@data/posts/types";
 
 describe("isLang", () => {
   it("returns true for 'en'", () => {

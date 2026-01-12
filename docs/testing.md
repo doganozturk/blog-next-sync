@@ -2,7 +2,7 @@
 
 This document describes the test setup and patterns used in the blog application.
 
-> **Source of truth:** `bunfig.toml`, `test/`, component `*.test.tsx` files
+> **Source of truth:** `bunfig.toml`, `test/`
 
 ## Overview
 
@@ -113,13 +113,32 @@ window.matchMedia = () => ({
 
 ## Test File Structure
 
-Tests are co-located with source files:
+Tests are located in the `test/` folder, mirroring the `src/` structure:
 
 ```
-src/components/footer/
-├── footer.tsx
-├── footer.module.css
-└── footer.test.tsx
+test/
+├── setup.ts              # Test setup and mocks
+├── happydom.ts           # HappyDOM registration
+├── css-modules.ts        # CSS modules plugin
+├── components/           # Component tests
+│   ├── footer.test.tsx
+│   ├── header/
+│   │   ├── header.test.tsx
+│   │   ├── main-header.test.tsx
+│   │   └── post-header.test.tsx
+│   ├── post-image.test.tsx
+│   ├── post-summary-list/
+│   │   ├── post-summary-list.test.tsx
+│   │   └── post-summary-list-item.test.tsx
+│   ├── post-video.test.tsx
+│   ├── theme-color-meta.test.tsx
+│   └── theme-switcher.test.tsx
+├── data/posts/           # Data layer tests
+│   ├── server.test.ts
+│   ├── server-errors.test.ts
+│   └── types.test.ts
+└── lib/
+    └── format-date.test.ts
 ```
 
 ### Naming Convention
@@ -199,9 +218,9 @@ Generates a coverage report.
 
 | Area | Location |
 |------|----------|
-| Components | `src/components/**/*.test.tsx` |
-| Data layer | `src/data/posts/*.test.ts` |
-| Utilities | `src/lib/*.test.ts` |
+| Components | `test/components/**/*.test.tsx` |
+| Data layer | `test/data/posts/*.test.ts` |
+| Utilities | `test/lib/*.test.ts` |
 
 ## Best Practices
 

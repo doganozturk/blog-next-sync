@@ -1,7 +1,7 @@
 import { describe, expect, it, spyOn, beforeEach, afterEach } from "bun:test";
 import fs from "node:fs";
 import path from "node:path";
-import { getAllPosts } from "./server";
+import { getAllPosts } from "@data/posts/server";
 
 describe("parseFrontmatter error cases", () => {
   const CONTENT_DIR = path.join(process.cwd(), "content/posts");

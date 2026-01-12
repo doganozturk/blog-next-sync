@@ -1,4 +1,4 @@
-import { formatDate, Locale } from "./format-date";
+import { formatDate, Locale } from "@lib/format-date";
 
 describe("formatDate", () => {
   it("formats date in English by default", () => {

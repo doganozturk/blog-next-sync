@@ -5,7 +5,7 @@ import {
   getPostParams,
   getPostBySlug,
   getPostByPermalink,
-} from "./server";
+} from "@data/posts/server";
 
 describe("getAllPosts", () => {
   it("returns posts sorted by date descending", () => {

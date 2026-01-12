@@ -68,7 +68,6 @@ export default async function PostPage({ params }: Props) {
     notFound();
   }
 
-  // Dynamically import the MDX file
   let Content;
   try {
     const mdxModule = await import(`@content/posts/${lang}/${slug}/index.mdx`);
