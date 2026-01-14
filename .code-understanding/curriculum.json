@@ -1,0 +1,577 @@
+{
+  "schemaVersion": 1,
+  "curriculumId": "apps-blog",
+  "packagePath": "apps/blog",
+  "contentRevision": "2026-01-14-v2",
+  "description": "Deep dive into doganozturk.dev blog - trace every code path, understand every decision",
+  "style": "hardcore",
+  "lessons": [
+    {
+      "id": "architecture",
+      "title": "Architecture Overview",
+      "description": "Build a mental model of how the blog works - routing, data flow, and key patterns",
+      "prerequisites": [],
+      "objectives": [
+        "Understand the Next.js App Router structure with i18n",
+        "See how content flows from MDX files to rendered pages",
+        "Know the key entry points and data flow"
+      ],
+      "keyFiles": [
+        { "path": "src/app/[lang]/layout.tsx", "anchor": { "type": "symbol", "query": "LangLayout" } },
+        { "path": "src/app/[lang]/page.tsx", "anchor": { "type": "symbol", "query": "HomePage" } },
+        { "path": "src/app/[lang]/[slug]/page.tsx", "anchor": { "type": "symbol", "query": "PostPage" } }
+      ],
+      "sections": [
+        {
+          "id": "welcome",
+          "type": "explain",
+          "title": "Welcome to the Blog Codebase"
+        },
+        {
+          "id": "familiarity-check",
+          "type": "question",
+          "question": "Before we dive in, how familiar are you with Next.js App Router?",
+          "hints": ["This helps calibrate the depth of explanations"],
+          "answerGuide": "a) Never used it, b) Somewhat familiar, c) Know it well"
+        },
+        {
+          "id": "route-structure",
+          "type": "explain",
+          "title": "Understanding the [lang] Dynamic Segment"
+        },
+        {
+          "id": "route-check",
+          "type": "question",
+          "question": "If someone visits /tr/web-components/, what values would [lang] and [slug] have in the page component?",
+          "hints": ["Look at the folder structure: src/app/[lang]/[slug]/", "Dynamic segments capture URL parts"],
+          "answerGuide": "lang = 'tr', slug = 'web-components'"
+        },
+        {
+          "id": "data-flow",
+          "type": "explain",
+          "title": "How Content Flows: MDX → Server → Page"
+        },
+        {
+          "id": "find-homepage-render",
+          "type": "explore",
+          "prompt": "Can you find where the list of blog posts is fetched and passed to the PostSummaryList component?",
+          "hints": ["Start in src/app/[lang]/page.tsx", "Look for a function that gets all posts"],
+          "answerGuide": "In HomePage, getAllPosts(lang) is called and passed to PostSummaryList"
+        },
+        {
+          "id": "static-generation",
+          "type": "explain",
+          "title": "Static Site Generation with generateStaticParams"
+        },
+        {
+          "id": "static-params-check",
+          "type": "question",
+          "question": "Why does generateStaticParams() return [{ lang: 'en' }, { lang: 'tr' }] in the [lang]/page.tsx file?",
+          "hints": ["Think about what Next.js needs to know at build time", "Static export means all pages must be pre-rendered"],
+          "answerGuide": "Next.js needs to know all possible values for [lang] at build time to pre-render both /en/ and /tr/ homepages"
+        }
+      ]
+    },
+    {
+      "id": "content-data-layer",
+      "title": "Content Data Layer - Deep Dive",
+      "description": "Trace every line in the data layer - from fs.readFileSync to sorted PostFrontmatter[]",
+      "prerequisites": ["architecture"],
+      "objectives": [
+        "Trace the complete code path of getAllPosts()",
+        "Understand every validation in parseFrontmatter()",
+        "Know exactly how posts are sorted and filtered"
+      ],
+      "keyFiles": [
+        { "path": "src/data/posts/server.ts", "anchor": { "type": "symbol", "query": "getAllPosts" } },
+        { "path": "src/data/posts/types.ts", "anchor": { "type": "symbol", "query": "PostFrontmatter" } }
+      ],
+      "sections": [
+        {
+          "id": "content-structure",
+          "type": "explain",
+          "title": "How Content is Organized"
+        },
+        {
+          "id": "frontmatter-explore",
+          "type": "explore",
+          "prompt": "Open any MDX file in content/posts/ and identify what metadata fields are in the frontmatter",
+          "hints": ["Look at the YAML block at the top of the file", "Check content/posts/en/web-components/index.mdx"],
+          "answerGuide": "title, description, date, permalink are the required frontmatter fields"
+        },
+        {
+          "id": "server-only-explain",
+          "type": "explain",
+          "title": "Why 'server-only' Matters"
+        },
+        {
+          "id": "gray-matter-check",
+          "type": "question",
+          "question": "Looking at src/data/posts/server.ts, what library is used to parse frontmatter from MDX files?",
+          "hints": ["Check the imports at the top", "It's a popular library for parsing YAML frontmatter"],
+          "answerGuide": "gray-matter - it extracts the YAML frontmatter and content separately"
+        },
+        {
+          "id": "trace-getPostsDirectory",
+          "type": "code-trace",
+          "title": "Trace: getPostsDirectory()",
+          "startFile": "src/data/posts/server.ts",
+          "startLine": 10,
+          "endLine": 12,
+          "followups": [
+            "What does CONTENT_DIR resolve to?",
+            "What is path.join doing here?"
+          ]
+        },
+        {
+          "id": "trace-parseFrontmatter",
+          "type": "code-trace",
+          "title": "Trace: parseFrontmatter() - Line by Line",
+          "startFile": "src/data/posts/server.ts",
+          "startLine": 14,
+          "endLine": 47,
+          "followups": [
+            "Why are there 4 separate validation checks?",
+            "What happens if title is missing?",
+            "How is permalink transformed on line 37-38?"
+          ]
+        },
+        {
+          "id": "trace-getAllPosts-loop",
+          "type": "code-trace",
+          "title": "Trace: The getAllPosts() Loop",
+          "startFile": "src/data/posts/server.ts",
+          "startLine": 49,
+          "endLine": 81,
+          "followups": [
+            "What does line 50 do when lang is undefined?",
+            "Walk through the nested for loops - what's happening?",
+            "Why fs.existsSync checks on lines 56 and 65?",
+            "What does matter() return and how is it destructured?"
+          ]
+        },
+        {
+          "id": "sorting-deep-dive",
+          "type": "question",
+          "question": "On lines 76-80, explain EXACTLY what the sort comparator does. What would happen if we swapped dateA and dateB?",
+          "hints": ["getTime() returns milliseconds since epoch", "Negative result means a comes before b"],
+          "answerGuide": "dateB - dateA: if B is newer (larger timestamp), result is positive, so B comes first. Swapping would reverse to oldest-first."
+        },
+        {
+          "id": "trace-getPostBySlug",
+          "type": "code-trace",
+          "title": "Trace: getPostBySlug() - The Individual Post Fetcher",
+          "startFile": "src/data/posts/server.ts",
+          "startLine": 102,
+          "endLine": 118,
+          "followups": [
+            "How does this differ from getAllPosts()?",
+            "Why does it return PostData instead of PostFrontmatter?",
+            "What's the 'content' field used for?"
+          ]
+        },
+        {
+          "id": "type-safety-deep",
+          "type": "explore",
+          "prompt": "In src/data/posts/types.ts, trace how the isLang() type guard works. What TypeScript feature makes 'value is Lang' special?",
+          "hints": ["Look at the return type annotation", "This is called a type predicate"],
+          "answerGuide": "Type predicates narrow types - after isLang(x) returns true, TypeScript knows x is Lang, not just string"
+        }
+      ]
+    },
+    {
+      "id": "theming",
+      "title": "Theming System - Implementation Details",
+      "description": "Trace the theme from localStorage through next-themes to CSS custom properties",
+      "prerequisites": ["architecture"],
+      "objectives": [
+        "Trace the complete theme initialization flow",
+        "Understand the hydration-safe mounting pattern",
+        "See how CSS variables respond to theme class changes"
+      ],
+      "keyFiles": [
+        { "path": "src/components/theme-switcher/theme-switcher.tsx", "anchor": { "type": "symbol", "query": "ThemeSwitcher" } },
+        { "path": "src/app/[lang]/layout.tsx", "anchor": { "type": "symbol", "query": "ThemeProvider" } },
+        { "path": "src/styles/variables.css", "anchor": { "type": "line", "line": 1 } },
+        { "path": "src/styles/global.css", "anchor": { "type": "line", "line": 1 } }
+      ],
+      "sections": [
+        {
+          "id": "trace-theme-provider",
+          "type": "code-trace",
+          "title": "Trace: ThemeProvider Setup",
+          "startFile": "src/app/[lang]/layout.tsx",
+          "startLine": 25,
+          "endLine": 34,
+          "followups": [
+            "What does attribute='class' mean?",
+            "What does enableSystem do?",
+            "Why suppressHydrationWarning on html and body?"
+          ]
+        },
+        {
+          "id": "trace-theme-switcher-mount",
+          "type": "code-trace",
+          "title": "Trace: The Mounted Pattern",
+          "startFile": "src/components/theme-switcher/theme-switcher.tsx",
+          "startLine": 7,
+          "endLine": 29,
+          "followups": [
+            "What is useState(false) for?",
+            "Why setMounted in useEffect?",
+            "What renders when mounted is false? Why?"
+          ]
+        },
+        {
+          "id": "hydration-question",
+          "type": "question",
+          "question": "If we removed the mounted check and directly rendered the theme emoji, what specific error would occur and why?",
+          "hints": ["Server renders with no localStorage", "Client has localStorage with user preference", "React compares server HTML to client render"],
+          "answerGuide": "Hydration mismatch - server might render 🌞 (default) but client localStorage says dark mode, so client wants 🌚. React throws a hydration error."
+        },
+        {
+          "id": "trace-toggle-function",
+          "type": "code-trace",
+          "title": "Trace: toggleTheme()",
+          "startFile": "src/components/theme-switcher/theme-switcher.tsx",
+          "startLine": 17,
+          "endLine": 19,
+          "followups": [
+            "What's resolvedTheme vs theme?",
+            "What does setTheme actually do under the hood?",
+            "Where does the theme value get persisted?"
+          ]
+        },
+        {
+          "id": "trace-css-variables",
+          "type": "code-trace",
+          "title": "Trace: CSS Variable Definitions",
+          "startFile": "src/styles/variables.css",
+          "startLine": 11,
+          "endLine": 32,
+          "followups": [
+            "Why separate -light and -dark variable sets?",
+            "What's the WCAG AA comment about on line 33-34?"
+          ]
+        },
+        {
+          "id": "trace-css-theme-application",
+          "type": "code-trace",
+          "title": "Trace: How Themes Apply",
+          "startFile": "src/styles/global.css",
+          "startLine": 1,
+          "endLine": 50,
+          "followups": [
+            "Find the .dark and .light selectors",
+            "How do --color-bg and --color-text get their values?",
+            "What's the transition-theme doing?"
+          ]
+        },
+        {
+          "id": "theme-meta-trace",
+          "type": "explore",
+          "prompt": "Find src/components/theme-color-meta/theme-color-meta.tsx. What does this component do and why is it needed?",
+          "hints": ["Look at what HTML element it creates", "Think about mobile browser chrome"],
+          "answerGuide": "It sets <meta name='theme-color'> dynamically based on theme - this colors the browser chrome/address bar on mobile"
+        }
+      ]
+    },
+    {
+      "id": "mdx-rendering",
+      "title": "MDX Rendering Pipeline - Complete Trace",
+      "description": "Follow an MDX file from disk through compilation to React component",
+      "prerequisites": ["content-data-layer"],
+      "objectives": [
+        "Trace the complete MDX compilation pipeline",
+        "Understand remark vs rehype plugin stages",
+        "See exactly how custom components are injected"
+      ],
+      "keyFiles": [
+        { "path": "mdx-components.tsx", "anchor": { "type": "symbol", "query": "useMDXComponents" } },
+        { "path": "next.config.ts", "anchor": { "type": "symbol", "query": "withMDX" } },
+        { "path": "src/app/[lang]/[slug]/page.tsx", "anchor": { "type": "line", "line": 71 } }
+      ],
+      "sections": [
+        {
+          "id": "trace-next-config-mdx",
+          "type": "code-trace",
+          "title": "Trace: MDX Configuration",
+          "startFile": "next.config.ts",
+          "startLine": 38,
+          "endLine": 53,
+          "followups": [
+            "What does createMDX() return?",
+            "What are remarkPlugins vs rehypePlugins?",
+            "What order do plugins run in?"
+          ]
+        },
+        {
+          "id": "plugin-pipeline",
+          "type": "question",
+          "question": "Looking at lines 40-49, describe the EXACT transformation pipeline: what does remark-frontmatter do, then remark-mdx-frontmatter, then rehype-pretty-code?",
+          "hints": ["Remark = Markdown AST, Rehype = HTML AST", "Check each plugin's purpose"],
+          "answerGuide": "1) remark-frontmatter: parses YAML frontmatter from markdown, 2) remark-mdx-frontmatter: exports frontmatter as JS variables, 3) rehype-pretty-code: syntax highlights code blocks in the HTML AST"
+        },
+        {
+          "id": "trace-dynamic-import",
+          "type": "code-trace",
+          "title": "Trace: Dynamic MDX Import",
+          "startFile": "src/app/[lang]/[slug]/page.tsx",
+          "startLine": 71,
+          "endLine": 77,
+          "followups": [
+            "Why is import() inside a try/catch?",
+            "What does mdxModule.default contain?",
+            "What's @content alias resolving to?"
+          ]
+        },
+        {
+          "id": "trace-mdx-components",
+          "type": "code-trace",
+          "title": "Trace: useMDXComponents()",
+          "startFile": "mdx-components.tsx",
+          "startLine": 1,
+          "endLine": 14,
+          "followups": [
+            "How does Next.js know to use this file?",
+            "What does spreading ...components do?",
+            "Can you override built-in elements like <a> here?"
+          ]
+        },
+        {
+          "id": "trace-post-image",
+          "type": "code-trace",
+          "title": "Trace: PostImage Component",
+          "startFile": "src/components/post-image/post-image.tsx",
+          "startLine": 1,
+          "endLine": 33,
+          "followups": [
+            "Why 'use client'?",
+            "What is ExportedImage from next-image-export-optimizer?",
+            "What does the sizes prop calculate?"
+          ]
+        },
+        {
+          "id": "trace-post-video",
+          "type": "code-trace",
+          "title": "Trace: PostVideo Component",
+          "startFile": "src/components/post-video/post-video.tsx",
+          "startLine": 1,
+          "endLine": 30,
+          "followups": [
+            "How does it embed YouTube videos?",
+            "What's the aspect ratio being maintained?"
+          ]
+        },
+        {
+          "id": "content-render-trace",
+          "type": "explore",
+          "prompt": "In src/app/[lang]/[slug]/page.tsx lines 79-89, trace exactly what <Content /> renders. Where does the article styling come from?",
+          "hints": ["Content is the MDX default export", "Look for className='post'", "Check src/styles/post.css"],
+          "answerGuide": "Content is the compiled MDX as a React component. It's wrapped in <article className='post'>, styled by post.css"
+        }
+      ]
+    },
+    {
+      "id": "components",
+      "title": "Component Architecture - Deep Patterns",
+      "description": "Analyze component composition, CSS Modules, and server/client boundaries",
+      "prerequisites": ["architecture"],
+      "objectives": [
+        "Trace component composition patterns",
+        "Understand CSS Module scoping mechanics",
+        "Map every server vs client component boundary"
+      ],
+      "keyFiles": [
+        { "path": "src/components/header/header.tsx", "anchor": { "type": "symbol", "query": "Header" } },
+        { "path": "src/components/post-summary-list/post-summary-list.tsx", "anchor": { "type": "symbol", "query": "PostSummaryList" } }
+      ],
+      "sections": [
+        {
+          "id": "trace-header-composition",
+          "type": "code-trace",
+          "title": "Trace: Header Composition Pattern",
+          "startFile": "src/components/header/header.tsx",
+          "startLine": 1,
+          "endLine": 29,
+          "followups": [
+            "Why an enum for HeaderType?",
+            "What does children prop allow?",
+            "Why is Link imported from next/link?"
+          ]
+        },
+        {
+          "id": "trace-main-header",
+          "type": "code-trace",
+          "title": "Trace: MainHeader Uses Header",
+          "startFile": "src/components/header/main-header/main-header.tsx",
+          "startLine": 1,
+          "endLine": 30,
+          "followups": [
+            "How does MainHeader customize Header?",
+            "What's being passed as children?",
+            "Why ExportedImage instead of next/image?"
+          ]
+        },
+        {
+          "id": "trace-post-header",
+          "type": "code-trace",
+          "title": "Trace: PostHeader - Different Children",
+          "startFile": "src/components/header/post-header/post-header.tsx",
+          "startLine": 1,
+          "endLine": 20,
+          "followups": [
+            "How is this different from MainHeader?",
+            "What's the SVG for?",
+            "Same Header base, different presentation - why this pattern?"
+          ]
+        },
+        {
+          "id": "server-client-map",
+          "type": "explore",
+          "prompt": "Create a list: which components in src/components/ are 'use client' and which are server components? Why each decision?",
+          "hints": ["Grep for 'use client'", "Think about what each component needs - hooks? browser APIs?"],
+          "answerGuide": "Client: ThemeSwitcher (useTheme hook), ThemeColorMeta (useTheme), PostImage (client-side image loading). Server: Header, Footer, PostSummaryList - they don't need client interactivity"
+        },
+        {
+          "id": "trace-css-module",
+          "type": "code-trace",
+          "title": "Trace: CSS Module Mechanics",
+          "startFile": "src/components/header/header.module.css",
+          "startLine": 1,
+          "endLine": 30,
+          "followups": [
+            "What does .header become after compilation?",
+            "How does styles.header in TSX map to the class?",
+            "Why can't CSS Modules have global side effects?"
+          ]
+        },
+        {
+          "id": "trace-post-list-item",
+          "type": "code-trace",
+          "title": "Trace: PostSummaryListItem - The List Item",
+          "startFile": "src/components/post-summary-list/post-summary-list-item/post-summary-list-item.tsx",
+          "startLine": 1,
+          "endLine": 45,
+          "followups": [
+            "What props does it receive?",
+            "How is the date formatted?",
+            "What's the Route type import for?"
+          ]
+        },
+        {
+          "id": "format-date-trace",
+          "type": "explore",
+          "prompt": "Trace the formatDate function in src/lib/format-date.ts. What library does it use? What locales are supported?",
+          "hints": ["Check the imports", "Look for Locale enum"],
+          "answerGuide": "Uses date-fns with format(). Supports Locale.en (enUS) and Locale.tr (tr) - maps to the blog's two languages"
+        }
+      ]
+    },
+    {
+      "id": "build-deploy",
+      "title": "Build & Deployment - Full Pipeline",
+      "description": "Trace from 'bun run build' through static generation to Vercel deployment",
+      "prerequisites": ["mdx-rendering"],
+      "objectives": [
+        "Understand every step of the build process",
+        "Trace image optimization pipeline",
+        "Know the Vercel deployment configuration"
+      ],
+      "keyFiles": [
+        { "path": "next.config.ts", "anchor": { "type": "symbol", "query": "nextConfig" } },
+        { "path": "package.json", "anchor": { "type": "line", "line": 1 } },
+        { "path": "vercel.json", "anchor": { "type": "line", "line": 1 } }
+      ],
+      "sections": [
+        {
+          "id": "trace-build-scripts",
+          "type": "code-trace",
+          "title": "Trace: Build Scripts",
+          "startFile": "package.json",
+          "startLine": 8,
+          "endLine": 11,
+          "followups": [
+            "What does 'next build' produce?",
+            "What's postbuild and when does it run?",
+            "What are next-sitemap and next-image-export-optimizer doing?"
+          ]
+        },
+        {
+          "id": "trace-next-config-output",
+          "type": "code-trace",
+          "title": "Trace: Static Export Config",
+          "startFile": "next.config.ts",
+          "startLine": 6,
+          "endLine": 24,
+          "followups": [
+            "What does output: 'export' mean?",
+            "Why trailingSlash: true?",
+            "What's the custom image loader for?",
+            "What are all those env variables for?"
+          ]
+        },
+        {
+          "id": "static-export-question",
+          "type": "question",
+          "question": "With output: 'export', what CAN'T this blog do that a normal Next.js app could?",
+          "hints": ["No server means no server-side features", "Think about dynamic data, API routes, ISR"],
+          "answerGuide": "No API routes, no ISR/revalidation, no dynamic server rendering, no middleware (mostly), no image optimization API - everything must be static at build time"
+        },
+        {
+          "id": "trace-image-optimization",
+          "type": "code-trace",
+          "title": "Trace: Image Optimization Setup",
+          "startFile": "next.config.ts",
+          "startLine": 9,
+          "endLine": 21,
+          "followups": [
+            "Why loader: 'custom'?",
+            "What do imageSizes and deviceSizes control?",
+            "What does nextImageExportOptimizer_storePicturesInWEBP do?"
+          ]
+        },
+        {
+          "id": "trace-vercel-config",
+          "type": "code-trace",
+          "title": "Trace: Vercel Configuration",
+          "startFile": "vercel.json",
+          "startLine": 1,
+          "endLine": 50,
+          "followups": [
+            "What are the redirects for?",
+            "Why redirect old URLs to /en/ versions?",
+            "What's the trailingSlash setting matching?"
+          ]
+        },
+        {
+          "id": "trace-turbopack-aliases",
+          "type": "code-trace",
+          "title": "Trace: Path Aliases",
+          "startFile": "next.config.ts",
+          "startLine": 29,
+          "endLine": 35,
+          "followups": [
+            "What's turbopack vs webpack config?",
+            "How do ~ and @ both map to src/?",
+            "Why separate @content alias?"
+          ]
+        },
+        {
+          "id": "output-exploration",
+          "type": "explore",
+          "prompt": "Look at the out/ directory structure. Trace a specific post like /en/web-components/ - what files were generated?",
+          "hints": ["Check out/en/web-components/", "Look for .html, .txt files", "What are the __next.* files?"],
+          "answerGuide": "index.html (the page), index.txt (RSC payload), various __next.*.txt files (segment data for streaming)"
+        },
+        {
+          "id": "sitemap-trace",
+          "type": "explore",
+          "prompt": "Find out/sitemap.xml and out/robots.txt. Where are these generated from?",
+          "hints": ["Check next-sitemap.config.js", "robots.txt might be in public/"],
+          "answerGuide": "sitemap.xml from next-sitemap postbuild script using next-sitemap.config.js, robots.txt is static from public/"
+        }
+      ]
+    }
+  ]
+}
