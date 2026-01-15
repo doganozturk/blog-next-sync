@@ -1,4 +1,6 @@
-import { describe, expect, it } from "bun:test";
+import { describe, expect, it, spyOn, beforeEach, afterEach } from "bun:test";
+import fs from "node:fs";
+import path from "node:path";
 import {
   getAllPosts,
   getAllSlugs,
@@ -13,7 +15,6 @@ describe("getAllPosts", () => {
 
     expect(posts.length).toBeGreaterThan(0);
 
-    // Verify sorted by date descending
     for (let i = 1; i < posts.length; i++) {
       const prevDate = new Date(posts[i - 1].date).getTime();
       const currDate = new Date(posts[i].date).getTime();
@@ -48,6 +49,90 @@ describe("getAllPosts", () => {
     for (const post of posts) {
       expect(post.permalink).toMatch(/^\/(en|tr)\/[\w-]+\/$/);
     }
+  });
+
+  describe("frontmatter validation", () => {
+    const CONTENT_DIR = path.join(process.cwd(), "content/posts");
+
+    let existsSyncSpy: ReturnType<typeof spyOn>;
+    let readdirSyncSpy: ReturnType<typeof spyOn>;
+    let readFileSyncSpy: ReturnType<typeof spyOn>;
+
+    beforeEach(() => {
+      existsSyncSpy = spyOn(fs, "existsSync");
+      readdirSyncSpy = spyOn(fs, "readdirSync");
+      readFileSyncSpy = spyOn(fs, "readFileSync");
+    });
+
+    afterEach(() => {
+      existsSyncSpy.mockRestore();
+      readdirSyncSpy.mockRestore();
+      readFileSyncSpy.mockRestore();
+    });
+
+    const setupMocks = (invalidContent: string) => {
+      existsSyncSpy.mockImplementation((p: string) => {
+        if (p === path.join(CONTENT_DIR, "en")) return true;
+        if (p === path.join(CONTENT_DIR, "en", "invalid-post", "index.mdx"))
+          return true;
+        return false;
+      });
+
+      readdirSyncSpy.mockImplementation((p: string) => {
+        if (p === path.join(CONTENT_DIR, "en")) return ["invalid-post"];
+        return [];
+      });
+
+      readFileSyncSpy.mockImplementation(() => invalidContent);
+    };
+
+    it("throws error when title is missing", () => {
+      setupMocks(`---
+description: "Test description"
+permalink: "/test/"
+date: "2025-01-01"
+lang: "en"
+---
+Content`);
+
+      expect(() => getAllPosts("en")).toThrow("Missing or invalid title");
+    });
+
+    it("throws error when description is missing", () => {
+      setupMocks(`---
+title: "Test Title"
+permalink: "/test/"
+date: "2025-01-01"
+lang: "en"
+---
+Content`);
+
+      expect(() => getAllPosts("en")).toThrow("Missing or invalid description");
+    });
+
+    it("throws error when date is missing", () => {
+      setupMocks(`---
+title: "Test Title"
+description: "Test description"
+permalink: "/test/"
+lang: "en"
+---
+Content`);
+
+      expect(() => getAllPosts("en")).toThrow("Missing or invalid date");
+    });
+
+    it("throws error when permalink is missing", () => {
+      setupMocks(`---
+title: "Test Title"
+description: "Test description"
+date: "2025-01-01"
+lang: "en"
+---
+Content`);
+
+      expect(() => getAllPosts("en")).toThrow("Missing or invalid permalink");
+    });
   });
 });
 
@@ -114,12 +199,8 @@ describe("getPostBySlug", () => {
   it("returns null for wrong language", () => {
     const enSlugs = getAllSlugs("en");
     const firstEnSlug = enSlugs[0];
-
-    // Try to get an English post with Turkish language
     const post = getPostBySlug(firstEnSlug, "tr");
 
-    // This may or may not be null depending on if there's a TR post with same slug
-    // Just verify function doesn't throw
     expect(post === null || post.frontmatter.lang === "tr").toBe(true);
   });
 });

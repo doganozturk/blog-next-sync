@@ -15,8 +15,6 @@ describe("PostVideo", () => {
       name: `Play video: ${defaultProps.title}`,
     });
     expect(button).toBeInTheDocument();
-
-    // Should NOT have iframe initially
     expect(screen.queryByTitle(defaultProps.title)).not.toBeInTheDocument();
   });
 
@@ -46,7 +44,6 @@ describe("PostVideo", () => {
     });
     fireEvent.click(button);
 
-    // Now iframe should be present
     const iframe = screen.getByTitle(defaultProps.title);
     expect(iframe).toBeInTheDocument();
     expect(iframe.tagName).toBe("IFRAME");

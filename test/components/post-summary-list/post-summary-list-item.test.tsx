@@ -41,7 +41,6 @@ describe("PostSummaryListItem", () => {
     render(<PostSummaryListItem {...defaultProps} />);
 
     const link = screen.getByRole("link");
-    // Next.js Link strips trailing slashes in test env
     expect(link.getAttribute("href")).toContain("/en/test-post");
   });
 

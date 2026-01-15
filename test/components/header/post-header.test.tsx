@@ -2,7 +2,6 @@ import { describe, expect, it, mock } from "bun:test";
 import { render, screen } from "@testing-library/react";
 import { PostHeader } from "@/components/header/post-header/post-header";
 
-// Mock next-themes for ThemeSwitcher used by Header
 mock.module("next-themes", () => ({
   useTheme: () => ({
     resolvedTheme: "light",

@@ -53,7 +53,6 @@ describe("PostSummaryList", () => {
     render(<PostSummaryList data={mockPosts} />);
 
     const links = screen.getAllByRole("link");
-    // Next.js Link strips trailing slashes in test env
     expect(links[0].getAttribute("href")).toContain("/en/first-post");
     expect(links[1].getAttribute("href")).toContain("/en/second-post");
   });

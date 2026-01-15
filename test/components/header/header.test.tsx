@@ -2,7 +2,6 @@ import { describe, expect, it, mock } from "bun:test";
 import { render, screen } from "@testing-library/react";
 import { Header, HeaderType } from "@/components/header/header";
 
-// Mock next-themes for ThemeSwitcher
 mock.module("next-themes", () => ({
   useTheme: () => ({
     resolvedTheme: "light",
@@ -28,7 +27,6 @@ describe("Header", () => {
       </Header>
     );
 
-    // ThemeSwitcher renders moon emoji in light mode
     expect(screen.getByText("🌚")).toBeInTheDocument();
   });
 

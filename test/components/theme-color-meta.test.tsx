@@ -2,7 +2,6 @@ import { describe, expect, it, mock, beforeEach } from "bun:test";
 import { render } from "@testing-library/react";
 import { ThemeColorMeta } from "@/components/theme-color-meta/theme-color-meta";
 
-// Mock next-themes
 let mockResolvedTheme: string | undefined = "light";
 
 mock.module("next-themes", () => ({
@@ -14,7 +13,6 @@ mock.module("next-themes", () => ({
 describe("ThemeColorMeta", () => {
   beforeEach(() => {
     mockResolvedTheme = "light";
-    // Reset meta tag
     const meta = document.querySelector('meta[name="theme-color"]');
     if (meta) {
       meta.setAttribute("content", "#faf8f5");
