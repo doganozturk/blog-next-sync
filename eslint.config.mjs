@@ -43,6 +43,7 @@ export default tseslint.config(
         ecmaFeatures: {
           jsx: true,
         },
+        tsconfigRootDir: import.meta.dirname,
       },
     },
   }
