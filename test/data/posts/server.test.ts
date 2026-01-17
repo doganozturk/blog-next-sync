@@ -89,9 +89,7 @@ describe("getAllPosts", () => {
     it("throws error when title is missing", () => {
       setupMocks(`---
 description: "Test description"
-permalink: "/test/"
 date: "2025-01-01"
-lang: "en"
 ---
 Content`);
 
@@ -101,9 +99,7 @@ Content`);
     it("throws error when description is missing", () => {
       setupMocks(`---
 title: "Test Title"
-permalink: "/test/"
 date: "2025-01-01"
-lang: "en"
 ---
 Content`);
 
@@ -114,24 +110,10 @@ Content`);
       setupMocks(`---
 title: "Test Title"
 description: "Test description"
-permalink: "/test/"
-lang: "en"
 ---
 Content`);
 
       expect(() => getAllPosts("en")).toThrow("Missing or invalid date");
-    });
-
-    it("throws error when permalink is missing", () => {
-      setupMocks(`---
-title: "Test Title"
-description: "Test description"
-date: "2025-01-01"
-lang: "en"
----
-Content`);
-
-      expect(() => getAllPosts("en")).toThrow("Missing or invalid permalink");
     });
   });
 });

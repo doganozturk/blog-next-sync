@@ -19,7 +19,6 @@ function parseFrontmatter(
   const title = data.title;
   const description = data.description;
   const date = data.date;
-  const rawPermalink = data.permalink;
 
   if (typeof title !== "string" || !title) {
     throw new Error(`Missing or invalid title in ${lang}/${slug}`);
@@ -30,18 +29,12 @@ function parseFrontmatter(
   if (typeof date !== "string" || !date) {
     throw new Error(`Missing or invalid date in ${lang}/${slug}`);
   }
-  if (typeof rawPermalink !== "string" || !rawPermalink) {
-    throw new Error(`Missing or invalid permalink in ${lang}/${slug}`);
-  }
-
-  const postSlug = rawPermalink.replace(/^\/?(tr\/)?/, "").replace(/\/$/, "");
-  const permalink = `/${lang}/${postSlug}/`;
 
   return {
     title,
     description,
     date,
-    permalink,
+    permalink: `/${lang}/${slug}/`,
     lang,
   };
 }

@@ -6,7 +6,8 @@ This file provides guidance to Claude Code when working with the blog package.
 
 ### Content System
 - Blog posts are MDX files in `content/posts/[en|tr]/[slug]/index.mdx`
-- Frontmatter includes: `title`, `description`, `date`, `permalink`, `lang`
+- Frontmatter includes: `title`, `description`, `date`
+- `permalink` and `lang` are derived from folder structure (not in frontmatter)
 - Post data layer in `src/data/posts/` (server-only with `gray-matter`)
 - Custom MDX components registered in `mdx-components.tsx`
 
