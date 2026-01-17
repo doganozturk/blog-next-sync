@@ -28,5 +28,5 @@ bun test:coverage    # Generate coverage report
 ## Adding Content
 
 1. Create `content/posts/[en|tr]/[slug]/index.mdx`
-2. Include required frontmatter: `title`, `description`, `date`, `permalink`, `lang`
+2. Include required frontmatter: `title`, `description`, `date`
 3. Post images go in `public/images/posts/[slug]/`

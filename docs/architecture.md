@@ -119,20 +119,9 @@ getPostByPermalink(permalink: string): PostData | null
 
 1. Read MDX files from `content/posts/[lang]/[slug]/index.mdx`
 2. Parse frontmatter with `gray-matter`
-3. Validate required fields (title, description, date, permalink)
-4. Normalize permalinks to `/{lang}/{slug}/` format
+3. Validate required fields (title, description, date)
+4. Derive permalink from folder structure as `/${lang}/${slug}/`
 5. Sort by date (newest first)
-
-### Permalink Normalization
-
-The raw `permalink` from frontmatter is normalized:
-
-```typescript
-const postSlug = rawPermalink.replace(/^\/?(tr\/)?/, "").replace(/\/$/, "");
-const permalink = `/${lang}/${postSlug}/`;
-```
-
-The language in the final permalink is determined by the folder being processed, not the value in frontmatter.
 
 ### Types
 
@@ -152,7 +141,6 @@ interface PostFrontmatter {
 interface PostData {
   frontmatter: PostFrontmatter;
   slug: string;
-  content: string;
 }
 
 interface PostParams {

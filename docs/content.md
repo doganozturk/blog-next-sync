@@ -33,7 +33,6 @@ Every post must include these frontmatter fields:
 title: "Post Title"
 description: "A short summary of the post for SEO and previews"
 date: "2024-01-15"
-permalink: "/en/my-new-post/"
 ---
 ```
 
@@ -44,22 +43,6 @@ permalink: "/en/my-new-post/"
 | `title` | string | Post title (displayed in header and metadata) |
 | `description` | string | Short summary for SEO meta tags and post list |
 | `date` | string | Publication date in `YYYY-MM-DD` format |
-| `permalink` | string | URL path (will be normalized) |
-
-**Note:** The `lang` field is derived from the folder structure, not from frontmatter.
-
-### Permalink Normalization
-
-The data layer (`src/data/posts/server.ts`) normalizes permalinks:
-
-```typescript
-const postSlug = rawPermalink.replace(/^\/?(tr\/)?/, "").replace(/\/$/, "");
-const permalink = `/${lang}/${postSlug}/`;
-```
-
-- Strips any existing language prefix from the raw permalink
-- Reconstructs with the correct language from the folder path
-- Ensures leading and trailing slashes
 
 ## Post Assets
 
@@ -119,7 +102,6 @@ Standard Markdown and JSX are also supported.
    title: "My New Post"
    description: "What this post is about"
    date: "2024-01-15"
-   permalink: "/en/my-new-post/"
    ---
 
    Post content goes here...
@@ -142,9 +124,8 @@ Standard Markdown and JSX are also supported.
 
 To create a Turkish version of an English post:
 
-1. Create the Turkish post directory with the same or translated slug
-2. Update `permalink` accordingly
-3. Translate the content
+1. Create the Turkish post directory with the same or translated slug (e.g., `content/posts/tr/my-new-post/`)
+2. Translate the content
 
 Posts in different languages are independent - they don't need matching slugs.
 
