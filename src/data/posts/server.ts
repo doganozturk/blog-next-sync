@@ -108,12 +108,11 @@ export function getPostBySlug(slug: string, lang: Lang): PostData | null {
   }
 
   const fileContents = fs.readFileSync(postPath, "utf8");
-  const { data, content } = matter(fileContents);
+  const { data } = matter(fileContents);
 
   return {
     frontmatter: parseFrontmatter(data, lang, slug),
     slug,
-    content,
   };
 }
 

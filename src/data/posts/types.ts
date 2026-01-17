@@ -16,7 +16,6 @@ export interface PostFrontmatter {
 export interface PostData {
   frontmatter: PostFrontmatter;
   slug: string;
-  content: string;
 }
 
 export interface PostParams {

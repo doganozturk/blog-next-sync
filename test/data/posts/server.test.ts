@@ -186,8 +186,7 @@ describe("getPostBySlug", () => {
     expect(post).not.toBeNull();
     expect(post!.slug).toBe(firstSlug);
     expect(post!.frontmatter).toBeDefined();
-    expect(post!.content).toBeDefined();
-    expect(typeof post!.content).toBe("string");
+    expect(post).not.toHaveProperty("content");
   });
 
   it("returns null for non-existent slug", () => {
