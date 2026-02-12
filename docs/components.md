@@ -165,8 +165,8 @@ Toggle between light and dark themes:
 
 - Uses `useTheme()` from `next-themes`
 - Renders sun/moon icons based on current theme
-- Handles hydration with "mounted" state pattern
-- Shows placeholder during SSR to avoid flash
+- Uses `next/dynamic` with `ssr: false` to render client-only toggle logic
+- Shows the same placeholder while client JS loads to keep header layout stable
 
 ### ThemeColorMeta
 

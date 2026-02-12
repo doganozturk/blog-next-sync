@@ -1,41 +1,21 @@
 "use client";
 
-import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
 import styles from "./theme-switcher.module.css";
 
-export function ThemeSwitcher() {
-  const [mounted, setMounted] = useState(false);
-  const { resolvedTheme, setTheme } = useTheme();
-
-  useEffect(() => {
-    // This pattern prevents hydration mismatch - intentionally setting state after mount
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setMounted(true);
-  }, []);
-
-  const toggleTheme = () => {
-    setTheme(resolvedTheme === "dark" ? "light" : "dark");
-  };
-
-  if (!mounted) {
-    return (
+export const ThemeSwitcher = dynamic(
+  () =>
+    import("./theme-switcher-client").then(
+      (module) => module.ThemeSwitcherClient,
+    ),
+  {
+    ssr: false,
+    loading: () => (
       <div className={styles.themeSwitcher}>
         <span className={`${styles.switch} ${styles.switchLoading}`}>
           &nbsp;
         </span>
       </div>
-    );
-  }
-
-  return (
-    <div className={styles.themeSwitcher} onClick={toggleTheme}>
-      {resolvedTheme === "dark" && (
-        <span className={`${styles.switch} ${styles.switchLight}`}>🌞</span>
-      )}
-      {resolvedTheme === "light" && (
-        <span className={`${styles.switch} ${styles.switchDark}`}>🌚</span>
-      )}
-    </div>
-  );
-}
+    ),
+  },
+);

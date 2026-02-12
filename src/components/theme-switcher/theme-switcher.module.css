@@ -8,6 +8,11 @@
   justify-content: center;
   width: 44px;
   height: 44px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
   cursor: pointer;
   border-radius: var(--radius-full);
   transition: transform var(--transition-fast);
@@ -19,6 +24,11 @@
 
 .themeSwitcher:active {
   transform: scale(0.95);
+}
+
+.themeSwitcher:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
 }
 
 .switch {
