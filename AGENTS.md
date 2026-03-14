@@ -62,6 +62,11 @@ bun run pagespeed:generate-urls # Regenerate pagespeed.urls.txt
 bun run pagespeed               # Run PageSpeed analysis on the generated URL list
 ```
 
+## Shared Memory
+
+- Read the repository root `MEMORY.md` before meaningful work so you inherit cross-workspace context.
+- Update the root `MEMORY.md` before finishing when this session adds durable context future agents working on the blog should know.
+
 ## Key Files
 
 | Purpose | Location |
