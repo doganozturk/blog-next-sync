@@ -8,6 +8,7 @@ export function PostHeader() {
         <span className={styles.backArrow} aria-hidden="true">
           ←
         </span>
+        {" "}
         doganozturk.dev
       </span>
     </Header>
