@@ -11,7 +11,7 @@ export function MainHeader() {
         width={100}
         height={100}
         sizes="(max-width: 768px) 100px, 200px"
-        priority
+        loading="eager"
         className={styles.avatar}
       />
       <div className={styles.title}>

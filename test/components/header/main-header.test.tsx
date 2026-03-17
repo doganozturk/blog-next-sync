@@ -17,11 +17,11 @@ describe("MainHeader", () => {
     expect(avatar).toBeInTheDocument();
   });
 
-  it("renders avatar with priority loading", () => {
+  it("renders avatar with eager loading", () => {
     render(<MainHeader />);
 
     const avatar = screen.getByAltText("Doğan Öztürk");
-    expect(avatar).toHaveAttribute("data-priority", "true");
+    expect(avatar).toHaveAttribute("loading", "eager");
   });
 
   it("renders avatar with correct dimensions", () => {

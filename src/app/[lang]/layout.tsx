@@ -5,8 +5,8 @@ import { ThemeColorMeta } from "~/components/theme-color-meta/theme-color-meta";
 import "~/app/globals.css";
 
 type Props = {
-  children: React.ReactNode;
-  params: Promise<{ lang: string }>;
+  readonly children: React.ReactNode;
+  readonly params: Promise<{ lang: string }>;
 };
 
 export function generateStaticParams() {

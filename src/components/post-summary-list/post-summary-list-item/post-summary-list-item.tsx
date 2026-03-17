@@ -4,11 +4,11 @@ import { formatDate, Locale } from "@lib/format-date";
 import styles from "./post-summary-list-item.module.css";
 
 export interface PostSummary {
-  title: string;
-  description: string;
-  permalink: string;
-  date: string;
-  lang: string;
+  readonly title: string;
+  readonly description: string;
+  readonly permalink: string;
+  readonly date: string;
+  readonly lang: string;
 }
 
 export function PostSummaryListItem({

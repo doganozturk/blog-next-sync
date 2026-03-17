@@ -9,8 +9,8 @@ export enum HeaderType {
 }
 
 interface HeaderProps {
-  type: HeaderType;
-  children: React.ReactNode;
+  readonly type: HeaderType;
+  readonly children: React.ReactNode;
 }
 
 export function Header({ type, children }: HeaderProps) {

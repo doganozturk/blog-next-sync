@@ -81,8 +81,8 @@ export function Footer() {
   return (
     <footer className={styles.footer}>
       <ul className={styles.links}>
-        {links.map(({ linkProps, icon: Icon, label }, index) => (
-          <li className={styles.link} key={index}>
+        {links.map(({ linkProps, icon: Icon, label }) => (
+          <li className={styles.link} key={linkProps.href}>
             <a {...linkProps} className={styles.linkAnchor} aria-label={label}>
               <Icon />
             </a>

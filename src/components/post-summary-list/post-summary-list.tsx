@@ -4,7 +4,7 @@ import {
 } from "./post-summary-list-item/post-summary-list-item";
 
 interface PostSummaryListProps {
-  data: PostSummary[];
+  readonly data: readonly PostSummary[];
 }
 
 export function PostSummaryList({ data }: PostSummaryListProps) {

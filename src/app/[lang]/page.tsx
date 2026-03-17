@@ -7,7 +7,7 @@ import { isLang } from "@data/posts/types";
 import { getAllPosts } from "@data/posts/server";
 
 type Props = {
-  params: Promise<{ lang: string }>;
+  readonly params: Promise<{ lang: string }>;
 };
 
 const META = {

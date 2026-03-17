@@ -4,8 +4,8 @@ import { useState, useCallback } from "react";
 import styles from "./post-video.module.css";
 
 interface PostVideoProps {
-  id: string;
-  title: string;
+  readonly id: string;
+  readonly title: string;
 }
 
 export function PostVideo({ id, title }: PostVideoProps) {

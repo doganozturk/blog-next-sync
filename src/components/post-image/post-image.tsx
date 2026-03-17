@@ -4,10 +4,10 @@ import ExportedImage from "next-image-export-optimizer";
 import styles from "./post-image.module.css";
 
 interface PostImageProps {
-  src: string;
-  alt: string;
-  width?: number;
-  height?: number;
+  readonly src: string;
+  readonly alt: string;
+  readonly width?: number;
+  readonly height?: number;
 }
 
 const DEFAULT_WIDTH = 800;

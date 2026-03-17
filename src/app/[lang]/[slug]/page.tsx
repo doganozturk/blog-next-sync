@@ -6,7 +6,7 @@ import { isLang } from "@data/posts/types";
 import { getPostParams, getPostBySlug } from "@data/posts/server";
 
 type Props = {
-  params: Promise<{ lang: string; slug: string }>;
+  readonly params: Promise<{ lang: string; slug: string }>;
 };
 
 export function generateStaticParams() {

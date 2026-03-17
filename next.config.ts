@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
-const path = require("path");
+const path = require("node:path");
 const createMDX = require("@next/mdx");
 
 /** @type {import('next').NextConfig} */
