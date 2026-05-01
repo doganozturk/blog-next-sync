@@ -1,17 +1,17 @@
 import nextPlugin from "@next/eslint-plugin-next";
 import reactPlugin from "eslint-plugin-react";
 import reactHooksPlugin from "eslint-plugin-react-hooks";
-import tseslint from "typescript-eslint";
+import {
+  tseslint,
+  typeAwareTypescriptConfig,
+  unusedVarsRule,
+  workspaceIgnores,
+} from "../../eslint.shared.mjs";
 
 export default [
   {
     ignores: [
-      "out/",
-      ".next/",
-      ".vercel/",
-      "node_modules/",
-      "*.config.js",
-      "*.config.mjs",
+      ...workspaceIgnores,
       "next-sitemap.config.js",
     ],
   },
@@ -28,10 +28,7 @@ export default [
       ...nextPlugin.configs["core-web-vitals"].rules,
       ...reactHooksPlugin.configs.recommended.rules,
       "react/react-in-jsx-scope": "off",
-      "@typescript-eslint/no-unused-vars": [
-        "error",
-        { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
-      ],
+      "@typescript-eslint/no-unused-vars": unusedVarsRule,
     },
     settings: {
       react: {
@@ -47,16 +44,11 @@ export default [
       },
     },
   },
-  {
+  typeAwareTypescriptConfig({
     files: ["**/*.{ts,tsx}"],
-    languageOptions: {
-      parserOptions: {
-        projectService: true,
-        tsconfigRootDir: import.meta.dirname,
-      },
+    parserOptions: {
+      projectService: true,
     },
-    rules: {
-      "@typescript-eslint/await-thenable": "error",
-    },
-  },
+    tsconfigRootDir: import.meta.dirname,
+  }),
 ];
