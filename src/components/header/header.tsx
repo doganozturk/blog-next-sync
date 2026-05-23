@@ -1,7 +1,8 @@
-import type { Route } from "next";
 import Link from "next/link";
 import { ThemeSwitcher } from "~/components/theme-switcher/theme-switcher";
 import styles from "./header.module.css";
+
+const HOME_ROUTE = "/en";
 
 export enum HeaderType {
   Main = "main",
@@ -17,7 +18,7 @@ export function Header({ type, children }: HeaderProps) {
   return (
     <header className={styles.header}>
       <Link
-        href={"/en/" as Route}
+        href={HOME_ROUTE}
         className={styles.headerMain}
         aria-label={type === HeaderType.Post ? "back" : undefined}
       >

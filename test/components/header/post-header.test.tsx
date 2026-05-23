@@ -33,6 +33,6 @@ describe("PostHeader", () => {
     render(<PostHeader />);
 
     const link = screen.getByRole("link");
-    expect(link).toHaveAttribute("href", "/en/");
+    expect(link).toHaveAttribute("href", "/en");
   });
 });
