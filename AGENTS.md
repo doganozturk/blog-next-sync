@@ -55,6 +55,7 @@ This file provides guidance to coding agents when working with the blog package.
 bun run dev                     # Start the Next.js dev server
 bun run build                   # Build the static export and run postbuild tasks
 bun run lint                    # Run ESLint
+bun run typecheck               # Run TypeScript compiler checks
 bun run test                    # Run tests in watch mode
 bun run test:ci                 # Run tests once (CI mode)
 bun run test:coverage           # Generate coverage report

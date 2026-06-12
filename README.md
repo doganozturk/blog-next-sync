@@ -10,6 +10,7 @@ Personal blog built with Next.js 16, React 19, and MDX.
 bun run dev                     # Start the Next.js dev server
 bun run build                   # Build the static export and run postbuild tasks
 bun run lint                    # Run ESLint
+bun run typecheck               # Run TypeScript compiler checks
 bun run test                    # Run tests in watch mode
 bun run test:ci                 # Run tests once
 bun run test:coverage           # Generate coverage report

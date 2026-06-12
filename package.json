@@ -10,6 +10,7 @@
     "postbuild": "next-sitemap && next-image-export-optimizer",
     "start": "bun --bun x next start",
     "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
     "test": "bun test --watch",
     "test:ci": "bun test",
     "test:coverage": "bun test --coverage --coverage-reporter=lcov",
