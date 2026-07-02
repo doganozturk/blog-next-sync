@@ -2,11 +2,15 @@ import nextPlugin from "@next/eslint-plugin-next";
 import reactPlugin from "eslint-plugin-react";
 import reactHooksPlugin from "eslint-plugin-react-hooks";
 import {
+  tsconfigRootDirFromMetaUrl,
   tseslint,
   typeAwareTypescriptConfig,
+  typescriptParserRootConfig,
   unusedVarsRule,
   workspaceIgnores,
 } from "../../eslint.shared.mjs";
+
+const tsconfigRootDir = tsconfigRootDirFromMetaUrl(import.meta.url);
 
 export default [
   {
@@ -16,6 +20,9 @@ export default [
     ],
   },
   ...tseslint.configs.recommended,
+  typescriptParserRootConfig({
+    tsconfigRootDir,
+  }),
   {
     files: ["**/*.{js,jsx,ts,tsx}"],
     plugins: {
@@ -40,7 +47,7 @@ export default [
         ecmaFeatures: {
           jsx: true,
         },
-        tsconfigRootDir: import.meta.dirname,
+        tsconfigRootDir,
       },
     },
   },
@@ -49,6 +56,6 @@ export default [
     parserOptions: {
       projectService: true,
     },
-    tsconfigRootDir: import.meta.dirname,
+    tsconfigRootDir,
   }),
 ];
