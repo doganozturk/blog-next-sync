@@ -1,7 +1,6 @@
 import { ThemeProvider } from "next-themes";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { ThemeColorMeta } from "~/components/theme-color-meta/theme-color-meta";
 import "~/app/globals.css";
 
 type Props = {
@@ -18,9 +17,6 @@ export default async function LangLayout({ children, params }: Props) {
 
   return (
     <html lang={lang} suppressHydrationWarning>
-      <head>
-        <ThemeColorMeta />
-      </head>
       <body suppressHydrationWarning>
         <ThemeProvider
           attribute="class"

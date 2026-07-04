@@ -131,7 +131,6 @@ test/
 │   │   ├── post-summary-list.test.tsx
 │   │   └── post-summary-list-item.test.tsx
 │   ├── post-video.test.tsx
-│   ├── theme-color-meta.test.tsx
 │   └── theme-switcher.test.tsx
 ├── data/posts/           # Data layer tests
 │   ├── server.test.ts

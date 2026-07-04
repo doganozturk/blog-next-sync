@@ -162,7 +162,6 @@ interface PostParams {
 - Renders `<html lang={lang}>` for accessibility/SEO
 - Imports global CSS (`globals.css`)
 - Wraps with `ThemeProvider` (next-themes, attribute="class")
-- Includes `ThemeColorMeta` for dynamic browser chrome color
 - Adds Vercel Analytics and Speed Insights
 
 ## Path Aliases

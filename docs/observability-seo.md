@@ -2,7 +2,7 @@
 
 This document covers metadata generation, SEO optimization, and analytics integration.
 
-> **Source of truth:** `src/app/layout.tsx`, `src/app/[lang]/page.tsx`, `src/app/[lang]/[slug]/page.tsx`, `src/components/theme-color-meta/`
+> **Source of truth:** `src/app/layout.tsx`, `src/app/[lang]/page.tsx`, `src/app/[lang]/[slug]/page.tsx`
 
 ## Metadata
 
@@ -100,22 +100,6 @@ Posts include Open Graph metadata for social sharing:
 
 Twitter cards use `summary` card type with title, description, and avatar image.
 
-## Theme Color
-
-`ThemeColorMeta` component (`src/components/theme-color-meta/`) dynamically sets the browser theme color based on the current theme:
-
-| Theme | Color |
-|-------|-------|
-| Light | `#faf8f5` |
-| Dark | `#0c0a09` |
-
-The component:
-1. Renders initial `<meta name="theme-color">` with light theme color
-2. Sets `<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">`
-3. Uses `useEffect` to update theme-color when `resolvedTheme` changes
-
-This affects the browser chrome color on mobile devices.
-
 ## Analytics
 
 ### Vercel Analytics
@@ -178,6 +162,5 @@ Sitemap: https://doganozturk.dev/sitemap.xml
 | Base metadata | `src/app/layout.tsx` |
 | Language home metadata | `src/app/[lang]/page.tsx` |
 | Post metadata | `src/app/[lang]/[slug]/page.tsx` |
-| Theme color | `src/components/theme-color-meta/` |
 | Analytics | `src/app/[lang]/layout.tsx` |
 | Sitemap config | `next-sitemap.config.js` |

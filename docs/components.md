@@ -18,7 +18,6 @@ src/components/
 ├── post-summary-list/
 │   └── post-summary-list-item/
 ├── post-video/
-├── theme-color-meta/
 └── theme-switcher/
 ```
 
@@ -167,23 +166,6 @@ Toggle between light and dark themes:
 - Renders sun/moon icons based on current theme
 - Uses `next/dynamic` with `ssr: false` to render client-only toggle logic
 - Shows the same placeholder while client JS loads to keep header layout stable
-
-### ThemeColorMeta
-
-Updates browser chrome color based on theme:
-
-```tsx
-// No props - uses next-themes internally
-
-const THEME_COLORS = {
-  light: "#faf8f5",
-  dark: "#0c0a09",
-};
-```
-
-- Sets `<meta name="theme-color">` dynamically
-- Adds `<meta name="apple-mobile-web-app-status-bar-style">`
-- Updates on theme change via `useEffect`
 
 ## Styling Pattern
 

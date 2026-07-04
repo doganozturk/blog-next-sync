@@ -18,7 +18,7 @@ This file provides guidance to coding agents when working with the blog package.
 - Listing pages live at `/[lang]/` and render via `src/app/[lang]/page.tsx`
 - Post pages live at `/[lang]/[slug]/` and render via `src/app/[lang]/[slug]/page.tsx`
 - `src/app/layout.tsx` owns root metadata, icons, and manifest configuration
-- `src/app/[lang]/layout.tsx` renders `<html>`/`<body>`, sets `lang`, imports global CSS, and mounts `ThemeProvider`, `ThemeColorMeta`, `Analytics`, and `SpeedInsights`
+- `src/app/[lang]/layout.tsx` renders `<html>`/`<body>`, sets `lang`, imports global CSS, and mounts `ThemeProvider`, `Analytics`, and `SpeedInsights`
 - Static params are generated in `src/app/[lang]/layout.tsx`, `src/app/[lang]/page.tsx`, and `src/app/[lang]/[slug]/page.tsx`; post routes also set `dynamicParams = false`
 - Post content is loaded from `@content/posts/${lang}/${slug}/index.mdx`
 - Legacy English URLs redirect to `/en/` equivalents via explicit rules in `vercel.json`
@@ -101,7 +101,6 @@ test/
 │   │   ├── post-summary-list.test.tsx
 │   │   └── post-summary-list-item.test.tsx
 │   ├── post-video.test.tsx
-│   ├── theme-color-meta.test.tsx
 │   └── theme-switcher.test.tsx
 ├── data/posts/           # Data layer tests
 │   ├── server.test.ts
