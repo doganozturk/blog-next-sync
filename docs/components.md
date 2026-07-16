@@ -156,14 +156,15 @@ interface PostVideoProps {
 
 ### ThemeSwitcher
 
-Toggle between light and dark themes:
+Cycle between system, light, and dark theme preferences:
 
 ```tsx
 // No props - uses next-themes internally
 ```
 
 - Uses `useTheme()` from `next-themes`
-- Renders sun/moon icons based on current theme
+- Renders desktop/sun/moon emojis for the selected preference
+- Cycles through system, light, and dark; system follows the OS color scheme
 - Uses `next/dynamic` with `ssr: false` to render client-only toggle logic
 - Shows the same placeholder while client JS loads to keep header layout stable
 

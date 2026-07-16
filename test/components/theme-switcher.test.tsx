@@ -4,7 +4,7 @@ import type { JSX } from "react";
 import { ThemeSwitcherClient } from "@/components/theme-switcher/theme-switcher-client";
 
 const mockSetTheme = mock(() => {});
-let mockResolvedTheme = "light";
+let mockTheme = "system";
 
 mock.module("next/dynamic", () => ({
   default: (
@@ -15,7 +15,7 @@ mock.module("next/dynamic", () => ({
 
 mock.module("next-themes", () => ({
   useTheme: () => ({
-    resolvedTheme: mockResolvedTheme,
+    theme: mockTheme,
     setTheme: mockSetTheme,
   }),
 }));
@@ -23,44 +23,67 @@ mock.module("next-themes", () => ({
 describe("ThemeSwitcherClient", () => {
   beforeEach(() => {
     mockSetTheme.mockClear();
-    mockResolvedTheme = "light";
+    mockTheme = "system";
   });
 
-  it("renders moon icon in light mode", () => {
-    mockResolvedTheme = "light";
+  it("renders desktop icon for the system preference", () => {
     render(<ThemeSwitcherClient />);
 
     expect(
-      screen.getByRole("button", { name: "Toggle theme" }),
+      screen.getByRole("button", {
+        name: "Theme: system. Switch to light",
+      }),
     ).toBeInTheDocument();
-    expect(screen.getByText("🌚")).toBeInTheDocument();
+    expect(screen.getByText("🖥️")).toBeInTheDocument();
   });
 
-  it("renders sun icon in dark mode", () => {
-    mockResolvedTheme = "dark";
+  it("renders sun icon for the light preference", () => {
+    mockTheme = "light";
     render(<ThemeSwitcherClient />);
 
     expect(screen.getByText("🌞")).toBeInTheDocument();
   });
 
-  it("calls setTheme with 'dark' when clicking in light mode", () => {
-    mockResolvedTheme = "light";
+  it("renders moon icon for the dark preference", () => {
+    mockTheme = "dark";
     render(<ThemeSwitcherClient />);
 
-    const switcher = screen.getByRole("button", { name: "Toggle theme" });
+    expect(screen.getByText("🌚")).toBeInTheDocument();
+  });
+
+  it("switches from system to light", () => {
+    render(<ThemeSwitcherClient />);
+
+    const switcher = screen.getByRole("button", {
+      name: "Theme: system. Switch to light",
+    });
+    fireEvent.click(switcher);
+
+    expect(mockSetTheme).toHaveBeenCalledWith("light");
+  });
+
+  it("switches from light to dark", () => {
+    mockTheme = "light";
+    render(<ThemeSwitcherClient />);
+
+    const switcher = screen.getByRole("button", {
+      name: "Theme: light. Switch to dark",
+    });
     fireEvent.click(switcher);
 
     expect(mockSetTheme).toHaveBeenCalledWith("dark");
   });
 
-  it("calls setTheme with 'light' when clicking in dark mode", () => {
-    mockResolvedTheme = "dark";
+  it("switches from dark to system", () => {
+    mockTheme = "dark";
     render(<ThemeSwitcherClient />);
 
-    const switcher = screen.getByRole("button", { name: "Toggle theme" });
+    const switcher = screen.getByRole("button", {
+      name: "Theme: dark. Switch to system",
+    });
     fireEvent.click(switcher);
 
-    expect(mockSetTheme).toHaveBeenCalledWith("light");
+    expect(mockSetTheme).toHaveBeenCalledWith("system");
   });
 });
 
@@ -74,6 +97,7 @@ describe("ThemeSwitcher", () => {
 
     expect(placeholder).toBeInTheDocument();
     expect(placeholder?.textContent).toBe("\u00a0");
+    expect(screen.queryByText("🖥️")).not.toBeInTheDocument();
     expect(screen.queryByText("🌞")).not.toBeInTheDocument();
     expect(screen.queryByText("🌚")).not.toBeInTheDocument();
   });
