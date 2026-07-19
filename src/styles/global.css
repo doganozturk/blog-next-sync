@@ -110,6 +110,7 @@ html.light .theme-container {
   --border-color: var(--color-border-light);
   --border-subtle: var(--color-border-subtle-light);
   --code-bg: var(--color-code-bg-light);
+  --code-text: var(--color-code-text-light);
   --accent-subtle: var(--color-accent-subtle);
   --accent-color: var(--color-accent-light);
   --accent-hover: var(--color-accent-hover-light);
@@ -126,6 +127,7 @@ html.dark .theme-container {
   --border-color: var(--color-border-dark);
   --border-subtle: var(--color-border-subtle-dark);
   --code-bg: var(--color-code-bg-dark);
+  --code-text: var(--color-code-text-dark);
   --accent-subtle: var(--color-accent-subtle-dark);
   --accent-color: var(--color-accent);
   --accent-hover: var(--color-accent-hover);
@@ -143,6 +145,7 @@ html.dark .theme-container {
     --border-color: var(--color-border-light);
     --border-subtle: var(--color-border-subtle-light);
     --code-bg: var(--color-code-bg-light);
+    --code-text: var(--color-code-text-light);
     --accent-subtle: var(--color-accent-subtle);
     --accent-color: var(--color-accent-light);
     --accent-hover: var(--color-accent-hover-light);
@@ -159,6 +162,7 @@ html.dark .theme-container {
     --border-color: var(--color-border-dark);
     --border-subtle: var(--color-border-subtle-dark);
     --code-bg: var(--color-code-bg-dark);
+    --code-text: var(--color-code-text-dark);
     --accent-subtle: var(--color-accent-subtle-dark);
     --accent-color: var(--color-accent);
     --accent-hover: var(--color-accent-hover);

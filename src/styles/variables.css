@@ -37,9 +37,10 @@
   --color-accent-hover-light: #a83800;
 
   /* Code Block Colors */
-  --color-code-bg-light: #1e1e1e;
+  --color-code-bg-light: #ffffff;
   --color-code-bg-dark: #0d0d0d;
-  --color-code-text: #d4d4d4;
+  --color-code-text-light: #000000;
+  --color-code-text-dark: #d4d4d4;
 
   /* ─────────────────────────────────────────────────────────────────────────────
      TYPOGRAPHY

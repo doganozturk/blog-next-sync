@@ -67,7 +67,13 @@ const withMDX = createMDX({
   options: {
     remarkPlugins: ["remark-frontmatter", "remark-mdx-frontmatter"],
     rehypePlugins: [
-      ["rehype-pretty-code", { theme: "dark-plus", keepBackground: true }],
+      [
+        "rehype-pretty-code",
+        {
+          theme: { light: "light-plus", dark: "dark-plus" },
+          keepBackground: true,
+        },
+      ],
     ],
   },
 });
@@ -75,7 +81,7 @@ const withMDX = createMDX({
 
 Key plugins:
 - **remark-frontmatter** + **remark-mdx-frontmatter**: Parse YAML frontmatter and expose as `meta` export
-- **rehype-pretty-code**: Syntax highlighting with VS Code's `dark-plus` theme
+- **rehype-pretty-code**: Syntax highlighting with VS Code's `light-plus` and `dark-plus` themes, selected by the active `next-themes` class
 
 ### Custom Components
 

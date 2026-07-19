@@ -47,7 +47,7 @@ This file provides guidance to coding agents when working with the blog package.
 - CSS Modules for component styles (`*.module.css`)
 - Global style layers are composed from `src/app/globals.css`
 - Design tokens live in `src/styles/variables.css`
-- `rehype-pretty-code` uses the `dark-plus` theme for code blocks
+- `rehype-pretty-code` emits VS Code `light-plus` and `dark-plus` token colors; `src/styles/shiki.css` selects the active palette from the `next-themes` HTML class
 
 ## Commands
 
