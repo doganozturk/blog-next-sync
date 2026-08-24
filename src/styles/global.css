@@ -108,7 +108,6 @@ html.light .theme-container {
   --text-secondary: var(--color-text-secondary-light);
   --text-muted: var(--color-text-muted-light);
   --border-color: var(--color-border-light);
-  --border-subtle: var(--color-border-subtle-light);
   --code-bg: var(--color-code-bg-light);
   --code-text: var(--color-code-text-light);
   --accent-subtle: var(--color-accent-subtle);
@@ -125,7 +124,6 @@ html.dark .theme-container {
   --text-secondary: var(--color-text-secondary-dark);
   --text-muted: var(--color-text-muted-dark);
   --border-color: var(--color-border-dark);
-  --border-subtle: var(--color-border-subtle-dark);
   --code-bg: var(--color-code-bg-dark);
   --code-text: var(--color-code-text-dark);
   --accent-subtle: var(--color-accent-subtle-dark);
@@ -143,7 +141,6 @@ html.dark .theme-container {
     --text-secondary: var(--color-text-secondary-light);
     --text-muted: var(--color-text-muted-light);
     --border-color: var(--color-border-light);
-    --border-subtle: var(--color-border-subtle-light);
     --code-bg: var(--color-code-bg-light);
     --code-text: var(--color-code-text-light);
     --accent-subtle: var(--color-accent-subtle);
@@ -160,7 +157,6 @@ html.dark .theme-container {
     --text-secondary: var(--color-text-secondary-dark);
     --text-muted: var(--color-text-muted-dark);
     --border-color: var(--color-border-dark);
-    --border-subtle: var(--color-border-subtle-dark);
     --code-bg: var(--color-code-bg-dark);
     --code-text: var(--color-code-text-dark);
     --accent-subtle: var(--color-accent-subtle-dark);
@@ -224,17 +220,6 @@ html.dark .theme-container {
   }
   to {
     opacity: 1;
-  }
-}
-
-@keyframes slideInFromLeft {
-  from {
-    opacity: 0;
-    transform: translateX(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
   }
 }
 

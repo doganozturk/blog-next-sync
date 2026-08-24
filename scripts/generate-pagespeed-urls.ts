@@ -1,7 +1,6 @@
 #!/usr/bin/env bun
 import fs from "node:fs";
 import path from "node:path";
-import matter from "gray-matter";
 
 const BASE_URL = "https://doganozturk.dev";
 const LANGS = ["en", "tr"] as const;
@@ -36,14 +35,7 @@ function getAllPostUrls(): string[] {
         continue;
       }
 
-      const fileContents = fs.readFileSync(postPath, "utf8");
-      const { data } = matter(fileContents);
-
-      if (typeof data.permalink === "string") {
-        const postSlug = data.permalink.replace(/^\/?(tr\/)?/, "").replace(/\/$/, "");
-        const permalink = `/${lang}/${postSlug}/`;
-        urls.push(`${BASE_URL}${permalink}`);
-      }
+      urls.push(`${BASE_URL}/${lang}/${slug}/`);
     }
   }
 

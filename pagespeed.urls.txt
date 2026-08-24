@@ -13,6 +13,7 @@ https://doganozturk.dev/en/javascript-basics-hoisting/
 https://doganozturk.dev/en/micro-frontends-architecture-with-webpack-module-federation-part-2/
 https://doganozturk.dev/en/of-sharks-network-cables-and-the-end-of-coding/
 https://doganozturk.dev/en/testing-google-maps-and-websockets-with-cypress/
+https://doganozturk.dev/en/the-raw-edge-of-reality/
 https://doganozturk.dev/en/understanding-decorators-through-basic-concepts-of-expressjs/
 https://doganozturk.dev/en/web-components/
 

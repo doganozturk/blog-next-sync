@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════════════════
-   FOOTER — Social links and copyright
+   FOOTER — Social links
    ═══════════════════════════════════════════════════════════════════════════ */
 
 .footer {
@@ -49,11 +49,4 @@
 
 .linkAnchor:active {
   transform: translateY(0);
-}
-
-/* Copyright text */
-.copyright {
-  font-size: var(--text-xs);
-  color: var(--text-muted);
-  letter-spacing: var(--tracking-wide);
 }

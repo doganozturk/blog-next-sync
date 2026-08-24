@@ -134,11 +134,11 @@ These redirects preserve SEO for URLs that existed before i18n routing was added
 ## Development
 
 ```bash
-bun dev          # Start development server (Turbopack)
+bun run dev      # Start development server (Turbopack)
 bun run lint     # Run ESLint (eslint .)
 bun run typecheck # Run TypeScript compiler checks
-bun test         # Run tests in watch mode
-bun test:ci      # Run tests once (CI mode)
+bun run test     # Run tests in watch mode
+bun run test:ci  # Run tests once (CI mode)
 ```
 
 ## Deployment Workflow

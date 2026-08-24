@@ -192,7 +192,7 @@ it("loads data", async () => {
 ### Development (Watch Mode)
 
 ```bash
-bun test
+bun run test
 ```
 
 Watches for file changes and re-runs affected tests.
@@ -200,7 +200,7 @@ Watches for file changes and re-runs affected tests.
 ### CI Mode
 
 ```bash
-bun test:ci
+bun run test:ci
 ```
 
 Runs all tests once and exits.
@@ -208,7 +208,7 @@ Runs all tests once and exits.
 ### Coverage
 
 ```bash
-bun test:coverage
+bun run test:coverage
 ```
 
 Generates a coverage report.

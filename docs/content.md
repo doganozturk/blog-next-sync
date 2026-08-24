@@ -115,7 +115,7 @@ Standard Markdown and JSX are also supported.
 
 4. Run development server to preview:
    ```bash
-   bun dev
+   bun run dev
    ```
 
 5. Visit `http://localhost:3000/en/my-new-post/`
