@@ -2,6 +2,7 @@ import nextPlugin from "@next/eslint-plugin-next";
 import reactPlugin from "eslint-plugin-react";
 import reactHooksPlugin from "eslint-plugin-react-hooks";
 import {
+  maintainabilityConfig,
   tsconfigRootDirFromMetaUrl,
   tseslint,
   typeAwareTypescriptConfig,
@@ -14,12 +15,10 @@ const tsconfigRootDir = tsconfigRootDirFromMetaUrl(import.meta.url);
 
 export default [
   {
-    ignores: [
-      ...workspaceIgnores,
-      "next-sitemap.config.js",
-    ],
+    ignores: workspaceIgnores,
   },
   ...tseslint.configs.recommended,
+  maintainabilityConfig,
   typescriptParserRootConfig({
     tsconfigRootDir,
   }),

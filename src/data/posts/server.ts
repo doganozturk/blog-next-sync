@@ -39,32 +39,28 @@ function parseFrontmatter(
   };
 }
 
+function readPostFrontmatter(lang: Lang, slug: string): PostFrontmatter | null {
+  const postPath = path.join(getPostsDirectory(lang), slug, "index.mdx");
+
+  if (!fs.existsSync(postPath)) {
+    return null;
+  }
+
+  const fileContents = fs.readFileSync(postPath, "utf8");
+  const { data } = matter(fileContents);
+  return parseFrontmatter(data, lang, slug);
+}
+
+function getPostsByLanguage(lang: Lang): PostFrontmatter[] {
+  return getAllSlugs(lang).flatMap((slug) => {
+    const frontmatter = readPostFrontmatter(lang, slug);
+    return frontmatter ? [frontmatter] : [];
+  });
+}
+
 export function getAllPosts(lang?: Lang): PostFrontmatter[] {
   const languages: readonly Lang[] = lang ? [lang] : ["en", "tr"];
-  const posts: PostFrontmatter[] = [];
-
-  for (const language of languages) {
-    const postsDir = getPostsDirectory(language);
-
-    if (!fs.existsSync(postsDir)) {
-      continue;
-    }
-
-    const slugs = fs.readdirSync(postsDir);
-
-    for (const slug of slugs) {
-      const postPath = path.join(postsDir, slug, "index.mdx");
-
-      if (!fs.existsSync(postPath)) {
-        continue;
-      }
-
-      const fileContents = fs.readFileSync(postPath, "utf8");
-      const { data } = matter(fileContents);
-
-      posts.push(parseFrontmatter(data, language, slug));
-    }
-  }
+  const posts = languages.flatMap(getPostsByLanguage);
 
   return posts.sort((a, b) => {
     const dateA = new Date(a.date).getTime();
@@ -93,18 +89,14 @@ export function getPostParams(): PostParams[] {
 }
 
 export function getPostBySlug(slug: string, lang: Lang): PostData | null {
-  const postsDir = getPostsDirectory(lang);
-  const postPath = path.join(postsDir, slug, "index.mdx");
+  const frontmatter = readPostFrontmatter(lang, slug);
 
-  if (!fs.existsSync(postPath)) {
+  if (!frontmatter) {
     return null;
   }
 
-  const fileContents = fs.readFileSync(postPath, "utf8");
-  const { data } = matter(fileContents);
-
   return {
-    frontmatter: parseFrontmatter(data, lang, slug),
+    frontmatter,
     slug,
   };
 }

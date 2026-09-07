@@ -6,43 +6,33 @@ const BASE_URL = "https://doganozturk.dev";
 const LANGS = ["en", "tr"] as const;
 type Lang = (typeof LANGS)[number];
 
-const CONTENT_DIR = path.join(process.cwd(), "content/posts");
-
-function getPostsDirectory(lang: Lang): string {
-  return path.join(CONTENT_DIR, lang);
+function getPostsDirectory(contentDir: string, lang: Lang): string {
+  return path.join(contentDir, lang);
 }
 
-function getAllPostUrls(): string[] {
-  const urls: string[] = [];
+function getPostUrls(contentDir: string, lang: Lang): string[] {
+  const postsDir = getPostsDirectory(contentDir, lang);
 
-  for (const lang of LANGS) {
-    urls.push(`${BASE_URL}/${lang}/`);
+  if (!fs.existsSync(postsDir)) {
+    return [];
   }
 
-  for (const lang of LANGS) {
-    const postsDir = getPostsDirectory(lang);
-
-    if (!fs.existsSync(postsDir)) {
-      continue;
-    }
-
-    const slugs = fs.readdirSync(postsDir);
-
-    for (const slug of slugs) {
-      const postPath = path.join(postsDir, slug, "index.mdx");
-
-      if (!fs.existsSync(postPath)) {
-        continue;
-      }
-
-      urls.push(`${BASE_URL}/${lang}/${slug}/`);
-    }
-  }
-
-  return urls.sort((a, b) => a.localeCompare(b));
+  return fs.readdirSync(postsDir).flatMap((slug) => {
+    const postPath = path.join(postsDir, slug, "index.mdx");
+    return fs.existsSync(postPath) ? [`${BASE_URL}/${lang}/${slug}/`] : [];
+  });
 }
 
-const urls = getAllPostUrls();
-for (const url of urls) {
-  console.log(url);
+export function getAllPostUrls(rootDir = process.cwd()): string[] {
+  const contentDir = path.join(rootDir, "content/posts");
+  return LANGS.flatMap((lang) => [
+    `${BASE_URL}/${lang}/`,
+    ...getPostUrls(contentDir, lang),
+  ]).sort((left, right) => left.localeCompare(right));
+}
+
+if (import.meta.main) {
+  for (const url of getAllPostUrls()) {
+    console.log(url);
+  }
 }
