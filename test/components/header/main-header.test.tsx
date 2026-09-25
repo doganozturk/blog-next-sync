@@ -1,6 +1,7 @@
 import { describe, expect, it, mock } from "bun:test";
 import { render, screen } from "@testing-library/react";
 import { MainHeader } from "@/components/header/main-header/main-header";
+import styles from "@/components/header/main-header/main-header.module.css";
 
 mock.module("next-themes", () => ({
   useTheme: () => ({
@@ -42,9 +43,13 @@ describe("MainHeader", () => {
   it("renders info text", () => {
     render(<MainHeader />);
 
-    expect(
-      screen.getByText("REFLECTIONS ON TECHNOLOGY, CULTURE, AND LIFE")
-    ).toBeInTheDocument();
+    const info = screen.getByText(/REFLECTIONS ON TECHNOLOGY,/);
+    expect(info).toHaveTextContent(
+      "REFLECTIONS ON TECHNOLOGY, CULTURE, AND LIFE"
+    );
+    expect(screen.getByText("CULTURE, AND LIFE")).toHaveClass(
+      styles.infoContinuation
+    );
   });
 
   it("renders link to home page with locale", () => {

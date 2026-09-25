@@ -26,6 +26,16 @@
   line-height: var(--leading-snug);
 }
 
+.infoContinuation {
+  display: inline;
+}
+
+@media (max-width: 767px) and (orientation: portrait) {
+  .infoContinuation {
+    display: block;
+  }
+}
+
 .avatar {
   width: var(--avatar-size);
   height: var(--avatar-size);

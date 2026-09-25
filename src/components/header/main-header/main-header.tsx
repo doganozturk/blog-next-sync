@@ -16,7 +16,10 @@ export function MainHeader() {
       />
       <div className={styles.title}>
         <h1 className={styles.name}>Doğan Öztürk</h1>
-        <p className={styles.info}>REFLECTIONS ON TECHNOLOGY, CULTURE, AND LIFE</p>
+        <p className={styles.info}>
+          REFLECTIONS ON TECHNOLOGY,{" "}
+          <span className={styles.infoContinuation}>CULTURE, AND LIFE</span>
+        </p>
       </div>
     </Header>
   );
