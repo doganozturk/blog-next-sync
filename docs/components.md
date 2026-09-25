@@ -37,7 +37,7 @@ interface HeaderProps {
 ```
 
 - Wraps children in a `<header>` element
-- Links header content to home page (`/en/`) with a document navigation
+- Links header content to home page (`/en/`)
 - Uses CSS Modules for styling
 
 **Note:** The home link is currently hardcoded to `/en/`, so Turkish pages link back to the English home.
@@ -93,7 +93,7 @@ interface PostSummaryListItemProps {
 }
 ```
 
-- Links to post via `permalink` with a document navigation
+- Links to post via `permalink`
 - Formats date using `formatDate()` with locale derived from `lang`
 - Displays title and description
 
