@@ -37,7 +37,7 @@ interface HeaderProps {
 ```
 
 - Wraps children in a `<header>` element
-- Links header content to home page (`/en/`)
+- Links header content to home page (`/en/`) with a document navigation
 - Uses CSS Modules for styling
 
 **Note:** The home link is currently hardcoded to `/en/`, so Turkish pages link back to the English home.
@@ -93,7 +93,7 @@ interface PostSummaryListItemProps {
 }
 ```
 
-- Links to post via `permalink`
+- Links to post via `permalink` with a document navigation
 - Formats date using `formatDate()` with locale derived from `lang`
 - Displays title and description
 
@@ -115,7 +115,7 @@ interface PostImageProps {
 ```
 
 - Uses `next-image-export-optimizer` for static export optimization
-- Wrapped in `<figure>` with `<figcaption>` from alt text
+- Uses the article image rules in `src/styles/post.css`
 - Default dimensions: 800x600
 
 **Usage in MDX:**

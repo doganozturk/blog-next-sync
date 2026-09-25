@@ -1,7 +1,6 @@
 "use client";
 
 import ExportedImage from "next-image-export-optimizer";
-import styles from "./post-image.module.css";
 
 interface PostImageProps {
   readonly src: string;
@@ -25,7 +24,6 @@ export function PostImage({
       alt={alt}
       width={width}
       height={height}
-      className={styles.postImage}
       loading="lazy"
       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 800px"
     />

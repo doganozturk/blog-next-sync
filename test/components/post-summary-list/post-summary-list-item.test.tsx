@@ -41,7 +41,7 @@ describe("PostSummaryListItem", () => {
     render(<PostSummaryListItem {...defaultProps} />);
 
     const link = screen.getByRole("link");
-    expect(link.getAttribute("href")).toContain("/en/test-post");
+    expect(link).toHaveAttribute("href", "/en/test-post/");
   });
 
   it("formats date in English locale", () => {
