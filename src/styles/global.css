@@ -195,13 +195,25 @@ html.dark .theme-container {
 
 .main {
   margin-top: var(--space-16);
-  animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) both;
+  /* Cover the gutters beside full-width post images during Safari route changes. */
+  background-color: var(--bg-color);
+  box-shadow: 0 0 0 var(--container-padding) var(--bg-color);
+  animation: slideInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) both;
   animation-delay: 0.1s;
 }
 
 /* ─────────────────────────────────────────────────────────────────────────────
    ANIMATIONS
    ───────────────────────────────────────────────────────────────────────────── */
+
+@keyframes slideInUp {
+  from {
+    transform: translateY(20px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
 
 @keyframes fadeInUp {
   from {
