@@ -84,7 +84,7 @@ export default async function PostPage({ params }: Props) {
           <Content />
         </article>
       </main>
-      <Footer />
+      <Footer entranceMotion />
     </>
   );
 }

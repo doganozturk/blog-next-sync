@@ -77,9 +77,13 @@ const links: LinkItem[] = [
   },
 ];
 
-export function Footer() {
+export function Footer({ entranceMotion = false }: { readonly entranceMotion?: boolean }) {
+  const className = entranceMotion
+    ? `${styles.footer} ${styles.entrance}`
+    : styles.footer;
+
   return (
-    <footer className={styles.footer}>
+    <footer className={className}>
       <ul className={styles.links}>
         {links.map(({ linkProps, icon: Icon, label }) => (
           <li className={styles.link} key={linkProps.href}>

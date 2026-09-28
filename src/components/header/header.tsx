@@ -15,8 +15,12 @@ interface HeaderProps {
 }
 
 export function Header({ type, children }: HeaderProps) {
+  const className = type === HeaderType.Post
+    ? `${styles.header} ${styles.entrance}`
+    : styles.header;
+
   return (
-    <header className={styles.header}>
+    <header className={className}>
       <Link
         href={HOME_ROUTE}
         className={styles.headerMain}

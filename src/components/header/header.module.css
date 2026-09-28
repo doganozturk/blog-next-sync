@@ -11,6 +11,9 @@
   justify-content: space-between;
   align-items: flex-start;
   padding: var(--space-6) 0;
+}
+
+.entrance {
   animation: fadeIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) both;
 }
 
