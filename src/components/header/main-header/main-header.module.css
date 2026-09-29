@@ -16,11 +16,13 @@
   line-height: var(--leading-tight);
   letter-spacing: var(--tracking-tight);
   color: var(--text-color);
+  transition: color var(--transition-theme);
 }
 
 .info {
   font-size: var(--text-sm);
   color: var(--text-secondary);
+  transition: color var(--transition-theme);
   letter-spacing: var(--tracking-normal);
   text-transform: uppercase;
   line-height: var(--leading-snug);
@@ -42,7 +44,7 @@
   border-radius: var(--radius-full);
   border: 3px solid var(--border-color);
   transition:
-    border-color var(--transition-base),
+    border-color var(--transition-theme),
     transform var(--transition-base),
     box-shadow var(--transition-base);
 }

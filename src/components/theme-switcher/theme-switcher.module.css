@@ -15,7 +15,9 @@
   font: inherit;
   cursor: pointer;
   border-radius: var(--radius-full);
-  transition: transform var(--transition-fast);
+  transition:
+    color var(--transition-theme),
+    transform var(--transition-fast);
 }
 
 .themeSwitcher:hover {

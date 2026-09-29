@@ -198,6 +198,9 @@ html.dark .theme-container {
   /* Cover the gutters beside full-width post images during Safari route changes. */
   background-color: var(--bg-color);
   box-shadow: 0 0 0 var(--container-padding) var(--bg-color);
+  transition:
+    background-color var(--transition-theme),
+    box-shadow var(--transition-theme);
 }
 
 /* ─────────────────────────────────────────────────────────────────────────────
