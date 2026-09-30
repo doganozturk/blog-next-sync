@@ -44,21 +44,25 @@ This file provides guidance to coding agents when working with the blog package.
 - Theme toggle lives in `src/components/theme-switcher/`
 
 ### Styling
-- CSS Modules for component styles (`*.module.css`)
-- Global style layers are composed from `src/app/globals.css`
-- Design tokens live in `src/styles/variables.css`
-- `rehype-pretty-code` emits VS Code `light-plus` and `dark-plus` token colors; `src/styles/shiki.css` selects the active palette from the `next-themes` HTML class
+- Shared layout, headers, footer, listings, and theme controls use Tailwind v4 utilities.
+- `src/app/globals.css` is the Tailwind entry. It registers Typography and the class-based dark variant. `postcss.config.json` is local to the Blog for standalone builds.
+- Prefer default colors and scales. The serif font extension preserves Georgia headings. See `docs/tailwind-migration.md` for browser support and migration evidence.
+- Article presentation is centralized on the page's Typography wrapper. Media components use Tailwind utilities. `globals.css` is the only authored presentation stylesheet.
+- `next-themes` owns the HTML theme class and persisted selection. Use `dark:` utilities; do not add system media queries that override explicit selection.
+- `rehype-pretty-code` emits light-plus and dark-plus token variables; article wrapper utilities select the active palette.
+- `bun run lint` first compiles the Tailwind entry, then runs ESLint with blocking shadcn authoring rules for components and MDX posts. See `docs/styling.md` for the exact Shiki exceptions and rule selection.
 
 ## Commands
 
 ```bash
 bun run dev                     # Start the Next.js dev server
 bun run build                   # Build the static export and run postbuild tasks
-bun run lint                    # Run ESLint
+bun run lint                    # Compile the Tailwind theme, then run ESLint
 bun run typecheck               # Run TypeScript compiler checks
 bun run test                    # Run tests in watch mode
 bun run test:ci                 # Run tests once (CI mode)
 bun run test:coverage           # Generate coverage report
+bun run test:browser            # Check the production export in three browsers
 bun run pagespeed:generate-urls # Regenerate pagespeed.urls.txt
 bun run pagespeed               # Run PageSpeed analysis on the generated URL list
 ```
@@ -83,13 +87,12 @@ bun run pagespeed               # Run PageSpeed analysis on the generated URL li
 
 ## Testing
 
-Tests use Bun's native test runner with `@testing-library/react`. `bunfig.toml` preloads `test/css-modules.ts`, `test/happydom.ts`, and `test/setup.ts` before the suite runs.
+Tests use Bun's native test runner with `@testing-library/react`. `bunfig.toml` preloads `test/happydom.ts` and `test/setup.ts` before the suite runs.
 
 ```text
 test/
 ├── setup.ts              # Test setup and mocks
 ├── happydom.ts           # Happy DOM registration
-├── css-modules.ts        # CSS modules plugin
 ├── components/           # Component tests
 │   ├── footer.test.tsx
 │   ├── header/

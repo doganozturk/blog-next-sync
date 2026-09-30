@@ -19,13 +19,16 @@ export function PostImage({
   height = DEFAULT_HEIGHT,
 }: PostImageProps) {
   return (
-    <ExportedImage
-      src={src}
-      alt={alt}
-      width={width}
-      height={height}
-      loading="lazy"
-      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 800px"
-    />
+    <div className="-mx-4 md:mx-0">
+      <ExportedImage
+        src={src}
+        alt={alt}
+        width={width}
+        height={height}
+        className="my-8 block h-auto w-full max-w-full rounded-none md:rounded-lg md:shadow-md"
+        loading="lazy"
+        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 800px"
+      />
+    </div>
   );
 }

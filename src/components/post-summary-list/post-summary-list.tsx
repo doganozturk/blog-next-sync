@@ -9,7 +9,7 @@ interface PostSummaryListProps {
 
 export function PostSummaryList({ data }: PostSummaryListProps) {
   return (
-    <section className="post-summary-list">
+    <section className="min-w-0">
       {data.map(({ title, description, permalink, date, lang }) => (
         <PostSummaryListItem
           key={permalink}

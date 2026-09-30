@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { ThemeSwitcher } from "~/components/theme-switcher/theme-switcher";
-import styles from "./header.module.css";
 
 const HOME_ROUTE = "/en";
 
@@ -15,15 +14,11 @@ interface HeaderProps {
 }
 
 export function Header({ type, children }: HeaderProps) {
-  const className = type === HeaderType.Post
-    ? `${styles.header} ${styles.entrance}`
-    : styles.header;
-
   return (
-    <header className={className}>
+    <header className={`flex items-start justify-between gap-4 py-6 md:pt-12 md:pb-8${type === HeaderType.Post ? " motion-safe:animate-post-header" : ""}`}>
       <Link
         href={HOME_ROUTE}
-        className={styles.headerMain}
+        className="flex min-w-0 items-center gap-4 md:gap-6"
         aria-label={type === HeaderType.Post ? "back" : undefined}
       >
         {children}

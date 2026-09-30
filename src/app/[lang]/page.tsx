@@ -79,7 +79,7 @@ export default async function HomePage({ params }: Props) {
   return (
     <>
       <MainHeader />
-      <main className="main">
+      <main className="homepage-main mt-16 min-w-0">
         <PostSummaryList data={posts} />
       </main>
       <Footer />

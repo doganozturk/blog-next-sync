@@ -38,7 +38,7 @@ interface HeaderProps {
 
 - Wraps children in a `<header>` element
 - Links header content to home page (`/en/`)
-- Uses CSS Modules for styling
+- Uses Tailwind utilities for layout and focus
 
 **Note:** The home link is currently hardcoded to `/en/`, so Turkish pages link back to the English home.
 
@@ -115,7 +115,7 @@ interface PostImageProps {
 ```
 
 - Uses `next-image-export-optimizer` for static export optimization
-- Uses the article image rules in `src/styles/post.css`
+- Keeps accessible `alt` text and responsive dimensions
 - Default dimensions: 800x600
 
 **Usage in MDX:**
@@ -170,19 +170,7 @@ Cycle between system, light, and dark theme preferences:
 
 ## Styling Pattern
 
-All components use CSS Modules:
-
-```
-component-name/
-├── component-name.tsx
-└── component-name.module.css
-```
-
-Import styles as:
-
-```tsx
-import styles from "./component-name.module.css";
-```
+Components use Tailwind utilities in `className`. The post page applies centralized Typography and Shiki token modifiers to its article wrapper. See [styling.md](./styling.md) for the shared entry and media contracts.
 
 ## Testing
 

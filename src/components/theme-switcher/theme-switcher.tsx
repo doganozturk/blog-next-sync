@@ -1,7 +1,6 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import styles from "./theme-switcher.module.css";
 
 export const ThemeSwitcher = dynamic(
   () =>
@@ -11,8 +10,8 @@ export const ThemeSwitcher = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className={styles.themeSwitcher}>
-        <span className={`${styles.switch} ${styles.switchLoading}`}>
+      <div className="flex size-11 shrink-0 items-center justify-center rounded-full bg-transparent p-0 text-inherit motion-safe:transition-transform motion-safe:hover:-translate-y-0.5 motion-safe:active:scale-95">
+        <span className="invisible flex size-6 items-center justify-center text-xl leading-none">
           &nbsp;
         </span>
       </div>

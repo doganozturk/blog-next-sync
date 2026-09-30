@@ -1,4 +1,3 @@
-import styles from "./footer.module.css";
 
 interface LinkItem {
   linkProps: { href: string; target?: string; rel?: string };
@@ -78,16 +77,12 @@ const links: LinkItem[] = [
 ];
 
 export function Footer({ entranceMotion = false }: { readonly entranceMotion?: boolean }) {
-  const className = entranceMotion
-    ? `${styles.footer} ${styles.entrance}`
-    : styles.footer;
-
   return (
-    <footer className={className}>
-      <ul className={styles.links}>
+    <footer className={`mt-auto flex items-center justify-between border-t border-stone-200 pt-12 pb-8 dark:border-stone-800${entranceMotion ? " motion-safe:animate-post-footer" : ""}`}>
+      <ul className="flex items-center gap-5">
         {links.map(({ linkProps, icon: Icon, label }) => (
-          <li className={styles.link} key={linkProps.href}>
-            <a {...linkProps} className={styles.linkAnchor} aria-label={label}>
+          <li className="flex items-center" key={linkProps.href}>
+            <a {...linkProps} className="flex size-11 items-center justify-center rounded-full text-stone-500 hover:text-orange-700 dark:text-stone-400 dark:hover:text-orange-500 motion-safe:transition motion-safe:hover:-translate-y-0.5" aria-label={label}>
               <Icon />
             </a>
           </li>

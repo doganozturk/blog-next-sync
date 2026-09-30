@@ -24,7 +24,7 @@ bun run pagespeed               # Run PageSpeed analysis for the generated URL l
 - **Build/export:** Static export via `output: "export"` with trailing slashes
 - **Content:** MDX posts in `content/posts/` with frontmatter parsed by `gray-matter`
 - **Routing:** Localized `/[lang]/` and `/[lang]/[slug]/` routes, with `/` redirecting to `/en/`
-- **Styling:** CSS Modules + CSS variables
+- **Styling:** Tailwind v4 utilities and Typography for articles
 - **Theme:** `next-themes`
 - **Testing:** Bun test runner with Happy DOM and Testing Library
 - **Analytics:** Vercel Analytics & Speed Insights

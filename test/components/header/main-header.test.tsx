@@ -1,7 +1,6 @@
 import { describe, expect, it, mock } from "bun:test";
 import { render, screen } from "@testing-library/react";
 import { MainHeader } from "@/components/header/main-header/main-header";
-import styles from "@/components/header/main-header/main-header.module.css";
 
 mock.module("next-themes", () => ({
   useTheme: () => ({
@@ -47,9 +46,7 @@ describe("MainHeader", () => {
     expect(info).toHaveTextContent(
       "REFLECTIONS ON TECHNOLOGY, CULTURE, AND LIFE"
     );
-    expect(screen.getByText("CULTURE, AND LIFE")).toHaveClass(
-      styles.infoContinuation
-    );
+    expect(screen.getByText("CULTURE, AND LIFE")).toBeInTheDocument();
   });
 
   it("renders link to home page with locale", () => {

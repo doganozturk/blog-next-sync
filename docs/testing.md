@@ -20,7 +20,6 @@ Tests use:
 ```toml
 [test]
 preload = [
-  "./test/css-modules.ts",
   "./test/happydom.ts",
   "./test/setup.ts",
 ]
@@ -29,16 +28,6 @@ preload = [
 Preload files run before each test file.
 
 ## Preload Files
-
-### test/css-modules.ts
-
-Enables CSS Modules in tests:
-
-```typescript
-import "bun-css-modules";
-```
-
-Without this, CSS Module imports would fail in the test environment.
 
 ### test/happydom.ts
 
@@ -119,7 +108,6 @@ Tests are located in the `test/` folder, mirroring the `src/` structure:
 test/
 ├── setup.ts              # Test setup and mocks
 ├── happydom.ts           # HappyDOM registration
-├── css-modules.ts        # CSS modules plugin
 ├── components/           # Component tests
 │   ├── footer.test.tsx
 │   ├── header/
@@ -263,10 +251,6 @@ await waitFor(() => {
 ### "Cannot find module 'server-only'"
 
 Ensure `test/setup.ts` mocks the module before tests run.
-
-### CSS Module Errors
-
-Ensure `test/css-modules.ts` is in the preload list.
 
 ### Missing DOM Globals
 

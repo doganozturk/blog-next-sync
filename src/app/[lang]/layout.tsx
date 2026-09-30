@@ -16,16 +16,16 @@ export default async function LangLayout({ children, params }: Props) {
   const { lang } = await params;
 
   return (
-    <html lang={lang} suppressHydrationWarning>
-      <body suppressHydrationWarning>
+    <html lang={lang} suppressHydrationWarning className="antialiased">
+      <body suppressHydrationWarning className="bg-stone-50 text-stone-900 dark:bg-stone-950 dark:text-stone-50">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange={false}
         >
-          <div className="theme-container">
-            <div className="container">{children}</div>
+          <div className="flex min-h-dvh w-full justify-center font-sans text-base leading-relaxed [&_a:focus-visible]:outline-2 [&_a:focus-visible]:outline-offset-2 [&_a:focus-visible]:outline-orange-600 [&_button:focus-visible]:outline-2 [&_button:focus-visible]:outline-offset-2 [&_button:focus-visible]:outline-orange-600">
+            <div className="flex w-full max-w-2xl max-md:has-[article]:max-w-none min-w-0 flex-col px-4 md:px-6">{children}</div>
           </div>
         </ThemeProvider>
         <SpeedInsights />
