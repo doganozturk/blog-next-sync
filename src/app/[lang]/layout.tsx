@@ -17,7 +17,7 @@ export default async function LangLayout({ children, params }: Props) {
 
   return (
     <html lang={lang} suppressHydrationWarning className="antialiased">
-      <body suppressHydrationWarning className="bg-stone-50 text-stone-900 dark:bg-stone-950 dark:text-stone-50">
+      <body suppressHydrationWarning className="transition-colors duration-300 ease-in-out motion-reduce:transition-none bg-stone-50 text-stone-900 dark:bg-stone-950 dark:text-stone-50">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

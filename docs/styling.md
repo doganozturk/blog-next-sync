@@ -6,7 +6,7 @@ Shared layout, headers, footer, listings, and theme controls use Tailwind v4 uti
 
 `src/app/globals.css` is the Tailwind entry. It imports Tailwind, registers the official Typography plugin, declares the class-based dark variant, and extends the serif font family and post entrance animations. `postcss.config.json` loads the Tailwind PostCSS plugin. Configuration and build dependencies belong to the Blog so the standalone copy can build.
 
-`globals.css` is the only authored presentation stylesheet. Tailwind generates the utility and Typography styles. Its `.homepage-main` rule paints the gutters during Safari route changes, and its theme transition rules preserve the 300 ms color fade. Keep other shared presentation in utilities; do not add CSS Modules.
+`globals.css` is the only authored presentation stylesheet. Tailwind generates the utility and Typography styles. Its `.homepage-main` rule paints the gutters during Safari route changes with the Tailwind stone palette. Native transition, duration, easing, and reduced-motion utilities on theme-colored elements preserve the 300 ms color fade. Keep other shared presentation in utilities; do not add CSS Modules.
 
 ## Shared components
 

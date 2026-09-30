@@ -79,7 +79,7 @@ export default async function HomePage({ params }: Props) {
   return (
     <>
       <MainHeader />
-      <main className="homepage-main mt-16 min-w-0">
+      <main className="homepage-main mt-16 min-w-0 transition duration-300 ease-in-out motion-reduce:transition-none">
         <PostSummaryList data={posts} />
       </main>
       <Footer />

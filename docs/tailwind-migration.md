@@ -16,7 +16,7 @@ The pre-migration production export at `127a03804fb1c241d5668bf9e74e69a817629eba
 
 Intentional refinements use the default stone palette, the 42rem container scale, default typography leading, and 44-pixel footer targets. Homepage entrance motion is removed; post header, article, and footer entrance motion remains, subject to reduced-motion preference. The reader keeps its avatar, serif headings, orange interaction accent, localized dates and links, and single-column reading layout.
 
-The homepage main paints the adjacent gutters during Safari route changes. Theme color changes fade for 300 ms across the migrated layout; hover feedback remains faster, and reduced motion disables the fade.
+The homepage main paints the adjacent gutters during Safari route changes with the same Tailwind stone palette values as the body. Use native `transition-colors duration-300 ease-in-out motion-reduce:transition-none` on theme-colored surfaces. The main uses `transition` to include the gutter shadow. Arrow opacity and footer icon movement remain separate 150 ms transitions; theme-related hover colors use the shared 300 ms fade. Reduced motion disables these transitions.
 
 The #831 article comparison uses the #830 export at `54f113e97c024a34cab3437cf6a55ce9061b2f6b`. Typography now supplies the default heading, list, blockquote, and code spacing. Images and code blocks extend to both mobile edges, including code blocks inside lists. From `md`, they stay within the reading column; videos stay within the column at every width. Serif headings, orange links, readable code in both themes, and the single-column layout remain. The browser suite checks the exported pages rather than freezing historical pixels.
 
