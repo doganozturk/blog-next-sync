@@ -1,4 +1,5 @@
-import { expect, test } from "bun:test";
+import { expect, test, mock } from "bun:test";
+import { render, screen, within } from "@testing-library/react";
 import RootPage from "../../src/app/page";
 import RootLayout, { metadata } from "../../src/app/layout";
 import LangLayout, { generateStaticParams as languages } from "../../src/app/[lang]/layout";
@@ -37,4 +38,14 @@ test("post routes derive static metadata and reject missing content", async () =
     expect(await postMetadata({ params })).toEqual({});
     expect(PostPage({ params })).rejects.toThrow("NEXT_HTTP_ERROR_FALLBACK;404");
   }
+});
+
+
+test("post routes render the loaded document inside the article", async () => {
+  mock.module("@content/posts/en/coverage-render-fixture/index.mdx", () => ({
+    default: () => <p>Loaded post document</p>,
+  }));
+  const page = await PostPage({ params: Promise.resolve({ lang: "en", slug: "coverage-render-fixture" }) });
+  render(page);
+  expect(within(screen.getByRole("article")).getByText("Loaded post document")).toBeInTheDocument();
 });

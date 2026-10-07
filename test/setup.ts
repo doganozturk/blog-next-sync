@@ -1,6 +1,23 @@
 import { afterEach, expect, mock } from "bun:test";
 import { cleanup } from "@testing-library/react";
 import * as matchers from "@testing-library/jest-dom/matchers";
+import type { ComponentType } from "react";
+
+export const dynamicComponentLoaders = new Map<
+  ComponentType,
+  () => Promise<ComponentType>
+>();
+
+mock.module("next/dynamic", () => ({
+  default: (
+    loader: () => Promise<ComponentType>,
+    options?: { loading?: ComponentType },
+  ) => {
+    const Loading = options?.loading ?? (() => null);
+    dynamicComponentLoaders.set(Loading, loader);
+    return Loading;
+  },
+}));
 
 mock.module("server-only", () => ({}));
 

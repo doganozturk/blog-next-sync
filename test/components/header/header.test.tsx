@@ -1,9 +1,5 @@
-import { describe, expect, it, mock } from "bun:test";
+import { describe, expect, it } from "bun:test";
 import { render, screen } from "@testing-library/react";
-
-mock.module("~/components/theme-switcher/theme-switcher", () => ({
-  ThemeSwitcher: () => <div data-testid="theme-switcher" />,
-}));
 
 describe("Header", () => {
   it("renders children", async () => {
@@ -17,7 +13,7 @@ describe("Header", () => {
     expect(screen.getByText("Test Child")).toBeInTheDocument();
   });
 
-  it("renders ThemeSwitcher", async () => {
+  it("renders the theme control's loading placeholder", async () => {
     const { Header, HeaderType } = await import("@/components/header/header");
     render(
       <Header type={HeaderType.Main}>
@@ -25,7 +21,9 @@ describe("Header", () => {
       </Header>
     );
 
-    expect(screen.getByTestId("theme-switcher")).toBeInTheDocument();
+    expect(
+      screen.getByText("\u00a0", { normalizer: (text) => text }),
+    ).toBeInTheDocument();
   });
 
   it("renders link to home page with locale", async () => {

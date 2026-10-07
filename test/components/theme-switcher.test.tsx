@@ -1,17 +1,10 @@
 import { describe, expect, it, mock, beforeEach } from "bun:test";
 import { render, screen, fireEvent } from "@testing-library/react";
-import type { JSX } from "react";
 import { ThemeSwitcherClient } from "@/components/theme-switcher/theme-switcher-client";
+import { dynamicComponentLoaders } from "../setup";
 
 const mockSetTheme = mock(() => {});
 let mockTheme = "system";
-
-mock.module("next/dynamic", () => ({
-  default: (
-    _loader: unknown,
-    options?: { loading?: () => JSX.Element },
-  ) => options?.loading ?? (() => null),
-}));
 
 mock.module("next-themes", () => ({
   useTheme: () => ({
@@ -100,5 +93,27 @@ describe("ThemeSwitcher", () => {
     expect(screen.queryByText("🖥️")).not.toBeInTheDocument();
     expect(screen.queryByText("🌞")).not.toBeInTheDocument();
     expect(screen.queryByText("🌚")).not.toBeInTheDocument();
+  });
+
+  it("loads a client that can switch the theme", async () => {
+    mockSetTheme.mockClear();
+    mockTheme = "system";
+    const { ThemeSwitcher } = await import(
+      "@/components/theme-switcher/theme-switcher"
+    );
+    const { rerender } = render(<ThemeSwitcher />);
+    expect(screen.queryByRole("button")).not.toBeInTheDocument();
+
+    const loadClient = dynamicComponentLoaders.get(ThemeSwitcher);
+    if (!loadClient) throw new Error("The dynamic client loader is unavailable");
+    const Client = await loadClient();
+    rerender(<Client />);
+
+    const button = screen.getByRole("button", {
+      name: "Theme: system. Switch to light",
+    });
+    expect(screen.getByText("🖥️")).toBeInTheDocument();
+    fireEvent.click(button);
+    expect(mockSetTheme).toHaveBeenCalledWith("light");
   });
 });
