@@ -3,7 +3,7 @@
   <desc id="desc">Five stages run from left to right. Plan uses grill-me or grill-with-docs, to-spec, to-tickets, and wayfinder. Build uses implement, implement-spec, and tdd. Review uses code-review and reviewers from other model families. Publish uses gh-stack and pr. Watch and hand off uses pr-steward and retro. My own do-the-thing skill drives Build through Watch. My own track-task skill keeps small local tasks on the GitHub board. All other skills are third-party.</desc>
   <rect width="1200" height="600" rx="28" fill="#f7f8f5"/>
   <text x="50" y="62" fill="#122236" font-family="Arial, sans-serif" font-size="32" font-weight="700">Skills compose the lifecycle</text>
-  <text x="50" y="95" fill="#536273" font-family="Arial, sans-serif" font-size="18">Third-party skills do most of the work; three small skills of my own connect them.</text>
+  <text x="50" y="95" fill="#536273" font-family="Arial, sans-serif" font-size="18">Third-party skills do most of the work; a few small skills of my own connect them.</text>
   <g font-family="Arial, sans-serif" font-size="16" font-weight="700">
     <rect x="50" y="118" width="22" height="22" rx="6" fill="#e9f0fc" stroke="#aec3e7" stroke-width="2"/><text x="82" y="135" fill="#254f91">Third-party skill</text>
     <rect x="250" y="118" width="22" height="22" rx="6" fill="#fff2df" stroke="#e3c995" stroke-width="2"/><text x="282" y="135" fill="#8a5c19">My skill</text>

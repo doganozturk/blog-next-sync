@@ -13,13 +13,13 @@ export const date = "2026-11-02";
 
 <p>{formatDate(date)}</p>
 
-Last year, I wrote about [how coding agents had changed my work](/en/of-sharks-network-cables-and-the-end-of-coding/). My projects grew and models became more capable, so I started working on the process around the code. As working with agents and the primitives around agentic development matured (sort of 🤷), handing off more of the work to agents started to make much more sense. I have a monorepo, which this blog is also part of, that I use as a playground for trying all kinds of emerging agentic development practices. So I wanted to push this workflow as far as I could.
+Last year, I wrote about [how coding agents had changed my work](/en/of-sharks-network-cables-and-the-end-of-coding/). In that post, I guessed that we would soon provide an input, expect an output, and think less about the code. I also wondered if the infrastructure around these things could be challenging and fun in its own way. As working with agents and the primitives around agentic development matured (sort of 🤷), handing off more of the work to agents started to make much more sense. I have a monorepo, which this blog is also part of, that I use as a playground for trying all kinds of emerging agentic development practices. So I wanted to push this workflow as far as I could.
 
-The result is a self-running software development lifecycle: a clear path from an idea to a reviewed change. I approve the scope in a GitHub issue and add one label. A GitHub Actions job on my Mac Studio then starts a coding agent that implements, reviews, and publishes the work. I still decide what to build, merge the reviewed changes, and judge the result against the plan. The factory handles everything between those decisions.
+The result is a self-running software development lifecycle: a clear path from an idea to a reviewed change. I settle the scope, it lands in a GitHub issue, and I add one label. A GitHub Actions job on my Mac Studio then starts a coding agent that implements, reviews, and publishes the work. I still decide what to build, merge the changes, and check the result. The factory handles everything between those decisions.
 
 Keeping everything in one monorepo gives the agents a simple world to work in. One checkout holds all the context they need: my apps, shared packages, documentation, repository rules in `AGENTS.md`, and the skills. Every project uses the same Bun and TypeScript setup and the same commands for checks. A change that touches several projects is still one issue and one pull request.
 
-This changes where I spend my attention. I still give code changes a light review, but I want to rely more on output signals: what the tests say, what reaches `main`, and how the system behaves. The goal is to judge the system as a whole. I am still working toward that, and I do not expect to get every part right, but the factory is one of the first steps.
+This changes where I spend my attention. I still give code changes a light review, but I want to rely more on output signals. Those are what the tests say, what reaches `main`, and how the system behaves. If it works, it works. I'm still working toward that, and I don't expect to get every part right, but the factory is one of the first steps.
 
 <figure>
   <div className="max-w-full overflow-x-auto rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600" role="region" aria-label="Software factory flow diagram" tabIndex={0}>
@@ -28,17 +28,17 @@ This changes where I spend my attention. I still give code changes a light revie
   <figcaption className="md:hidden">Scroll sideways to read the full diagram on a phone.</figcaption>
 </figure>
 
-## The work starts before the factory
+## The Work Starts Before the Factory
 
-The backbone of my development flow comes from [Matt Pocock's agent skills](https://github.com/mattpocock/skills). A skill is a short instruction file that tells an agent how to do one kind of work. For a substantial feature, I start with [`grill-me`](https://github.com/mattpocock/skills/tree/main/skills/productivity/grill-me), or with [`grill-with-docs`](https://github.com/mattpocock/skills/tree/main/skills/engineering/grill-with-docs) when the decisions should also update my glossary and decision records. The agent questions the idea, one round of decisions at a time, until we share the same understanding.
+The backbone of my development flow comes from [Matt Pocock's agent skills](https://github.com/mattpocock/skills). A skill is a short instruction file that tells an agent how to do one kind of work. For a substantial feature, I start with [`grill-me`](https://github.com/mattpocock/skills/tree/main/skills/productivity/grill-me), or with [`grill-with-docs`](https://github.com/mattpocock/skills/tree/main/skills/engineering/grill-with-docs) when the decisions should also update my glossary and decision records. The agent questions the idea, one round of decisions at a time, until we share the same understanding. I think this is the part that matters most.
 
-[`to-spec`](https://github.com/mattpocock/skills/tree/main/skills/engineering/to-spec) then writes those decisions into a specification. [`to-tickets`](https://github.com/mattpocock/skills/tree/main/skills/engineering/to-tickets) turns the specification into delivery slices, each with its own acceptance criteria and dependencies. For work too large for one session, [`wayfinder`](https://github.com/mattpocock/skills/tree/main/skills/engineering/wayfinder) first maps the open decisions as tickets. I use Claude Opus 5.5 on medium effort for all of this planning work. The grilling session already shows me what the outcome will be, so I do not read the finished specs and tickets.
+[`to-spec`](https://github.com/mattpocock/skills/tree/main/skills/engineering/to-spec) then writes those decisions into a specification. [`to-tickets`](https://github.com/mattpocock/skills/tree/main/skills/engineering/to-tickets) turns the specification into delivery slices, each with its own acceptance criteria and dependencies. For work too large for one session, [`wayfinder`](https://github.com/mattpocock/skills/tree/main/skills/engineering/wayfinder) first maps the open decisions as tickets. I use Claude Opus 5.5 on medium effort for all of this planning work. I don't read the finished specs and tickets, because the grilling session already shows me what the outcome will be.
 
-Every piece of work starts as a GitHub issue. For a larger feature, that issue is the specification. It says what problem I am solving, the intended behavior, the scope and constraints, and how I will know the work is complete. The agent that builds it starts with no memory of the original conversation, so the issue must hold the accepted answer. A small fix needs only one issue and one pull request.
+Every piece of work starts as a GitHub issue. For a larger feature, that issue is the specification. It says what problem I'm solving, the intended behavior, the scope and constraints, and how I will know the work is complete. The agent that builds it starts with no memory of the original conversation, so the issue must hold the accepted answer. A small fix needs only one issue and one pull request.
 
-In a larger feature, each child ticket has its own scope, acceptance criteria, expected tests, and native GitHub links to any ticket that blocks it. Imagine a change to the blog with three slices: shared styling first, article layout next, and an independent header fix. The article work depends on the styling ticket. The header fix is independent, so the agent can build it at the same time as the styling.
+In a larger feature, each child ticket has its own scope, acceptance criteria, expected tests, and native GitHub links to any ticket that blocks it. Let's say I want to change the blog in three slices: shared styling, article layout, and a header fix. The article work depends on the styling ticket. The header fix is independent, so the agent can build it at the same time as the styling.
 
-I install third-party skills with the [skills CLI](https://www.skills.sh/docs/cli) and keep copies in the monorepo. `skills-lock.json` records each imported skill, and I review the import diff before each update. On top of them sit three small skills of my own, which I explain where they appear below. I keep the whole set lean. Each skill is short and points to the repository's documents. I review the set regularly and remove what no longer earns its place.
+I install third-party skills with the [skills CLI](https://www.skills.sh/docs/cli) and keep copies in the monorepo. `skills-lock.json` records each imported skill, and I review the import diff before each update. On top of them sit a few small skills of my own, and I explain the main ones where they appear below. I keep the whole set lean. Each skill is short and points to the repository's documents, and I remove what I no longer need.
 
 <figure>
   <div className="max-w-full overflow-x-auto rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600" role="region" aria-label="Skills diagram" tabIndex={0}>
@@ -47,19 +47,21 @@ I install third-party skills with the [skills CLI](https://www.skills.sh/docs/cl
   <figcaption className="md:hidden">Scroll sideways to read the full diagram on a phone.</figcaption>
 </figure>
 
-## Moving up the agentic ladder
+## Moving Up the Agentic Ladder
 
-I automate a process only after I have run it by hand and watched how agents behave in it. When the results are predictable and I trust them, I let the process run without me. Each automated process is one step up the agentic ladder.
+I automate a process only after I have run it by hand and watched how agents behave in it. When the results are predictable and I trust them, I let the process run without me. For me, each automated process is one step up the agentic ladder.
 
-Delivery is the clearest example. `do-the-thing`, my own delivery skill, takes accepted scope to reviewed pull requests and a handoff. I first ran it in local Codex sessions and watched each step. For a small local task, `track-task`, another skill of mine, keeps the issue on the board and moves it to In Progress.
+Delivery is the clearest example. `do-the-thing`, my own delivery skill, takes accepted scope to reviewed pull requests and a handoff. I first ran it in local Codex sessions and watched each step. I still run small local tasks that way, with another skill of mine, `track-task`, keeping the issue on the board.
 
-After many of those sessions, I trusted the flow enough to automate it. The same skill now starts from a GitHub label and runs while I do something else. I review its handoff at the end. Planning, review, and QA are on lower steps today, and they are the next ones I want to automate. The steps after them will come fast.
+After many of those sessions, I trusted the flow enough to automate it. The same skill now starts from a GitHub label and runs while I do something else. I review its handoff at the end. Planning, my own code review, and QA are on lower steps today, and they are the next ones I want to automate. I think the steps after them will come fast.
 
-## GitHub holds the project state
+## GitHub Holds the Project State
 
-I use GitHub Issues and Projects as the project management tool. The spec holds the decisions and final acceptance. Child issues hold the slices that can be implemented and reviewed separately. Native parent and blocker links show how the pieces fit together. Pull requests show the actual code and review evidence.
+I use GitHub Issues and Projects as the project management tool. Each app in the monorepo has its own Project board, and shared monorepo work has one more. One look at the right board shows me where each piece stands.
 
-GitHub is the single source of truth for the factory. That is a practical choice more than an ideal one. The issues, labels, pull requests, and checks already live there, and every agent can read them.
+The spec holds the decisions and final acceptance. Child issues hold the slices that can be implemented and reviewed separately. Native parent and blocker links show how the pieces fit together. Pull requests show the actual code and review evidence.
+
+GitHub is the single source of truth for the factory. It's a practical choice. The issues, labels, pull requests, and checks already live there, and every agent can read them.
 
 <figure>
   <div className="max-w-full overflow-x-auto rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600" role="region" aria-label="GitHub project record diagram" tabIndex={0}>
@@ -70,9 +72,9 @@ GitHub is the single source of truth for the factory. That is a practical choice
 
 Project statuses follow the work. A local task moves to In Progress when the agent starts. A label-started run keeps its issue in Todo until the first pull request opens, and then the issue moves to In Review. Each pull request carries an exact `Agent Run: #<issue>` line that links it to its issue. Skips, questions, and handoffs appear as comments on the issue.
 
-A green pull request is still In Review. An issue is done only when its own deliverable passes acceptance. A merged child can be done while its parent still needs product or runtime evidence. Each app in the monorepo has its own Project board, and shared monorepo work has one more. One look at the right board shows me where each piece stands.
+A green pull request is still In Review. An issue is done only when its own deliverable passes acceptance. A merged child can be done while its parent still needs product or runtime evidence.
 
-## One label starts one run
+## One Label Starts One Run
 
 When the scope is settled, I put the issue in Todo and add `agent:run`. For background work, that label is the only authorization. For ticketed work, I add it to the spec, and one run delivers the full ticket graph.
 
@@ -87,26 +89,20 @@ The label triggers a GitHub Actions workflow, which also sweeps labelled issues 
 
 A small Bun launcher reads the issue, its Project status, and its open pull requests. Then it decides:
 
-- The label must come from me or my bot account.
+- The label must come from one of my accounts.
 - A child ticket is skipped with a comment that points to its spec.
 - An issue in Todo starts a new run.
 - An issue in In Review with open Agent Run pull requests resumes.
 - An issue with an open blocker keeps its label and waits.
-- A run prepares the issue's own copy of the repository and starts `do-the-thing`.
+- Any other issue is skipped with a comment.
 
-Agents work on GitHub through a dedicated bot account. It commits, opens pull requests, and comments on issues. I stay the reviewer and the only person who merges. Because the bot is a separate author, CI runs on its pull requests, and its changes are easy to tell apart from mine.
+GitHub holds the state, and GitHub Actions handles scheduling, concurrency, and cancellation. The launcher connects the two, prepares the issue's own copy of the repository, and starts `do-the-thing`. The rest of the factory lives in that skill.
 
-Each spec runs as one job on one runner. Inside that job, [`implement-spec`](https://github.com/mattpocock/skills/tree/main/skills/engineering/implement-spec) gives each ready ticket its own subagent and worktree, so independent tickets are built at the same time. Dependent tickets wait for the tickets that block them. Across runners, separate issues run in parallel. Spreading one spec over several runners would add capacity, but coordinating that safely is a problem of its own.
+Agents work on GitHub through a dedicated bot account. It commits, opens pull requests, and comments on issues. I stay the reviewer and the only person who merges. Because the bot pushes with its own login, CI runs on its pull requests, and its changes are easy to tell apart from mine.
 
-GitHub holds the state, and GitHub Actions handles scheduling, concurrency, and cancellation. The launcher connects the two and starts the agent. The rest of the factory lives in `do-the-thing`.
+Each spec runs as one job on one runner. Inside that job, [`implement-spec`](https://github.com/mattpocock/skills/tree/main/skills/engineering/implement-spec) gives independent tickets their own subagents and worktrees, so they are built at the same time. Dependent tickets wait for the tickets that block them. Separate issues run in parallel on separate runners. Spreading one spec over several runners would add capacity, but I think coordinating that safely is a problem of its own.
 
-## The factory can outgrow one machine
-
-The runners are ordinary self-hosted GitHub Actions runners, so the factory can move or scale beyond my Mac Studio. When I need more compute, I can add more machines to the local stack. Linux machines would work too, with the agent CLIs installed and logged in. The launcher and the skills would stay the same, and the workflow would only need new runner labels.
-
-Several cloud providers also offer runners that work with GitHub Actions. Their per-minute pricing may not make sense for agent runs, even for personal work. A run can take hours, and the runner spends most of that time waiting on the model and on PR Steward. A machine I already own costs nothing extra while it waits. Cloud runners would also need a safe way to hold my agent logins.
-
-## What happens in one run
+## What Happens in One Run
 
 The agent reads the full issue and its comments first. If the outcome or a required decision is unclear, it posts questions on the issue, removes the label, and stops. I answer on the issue and add the label again.
 
@@ -120,21 +116,21 @@ The agent checks each finding against the current source. It fixes real defects 
 
 The agent writes each pull request body with Matt's [`pr`](https://github.com/mattpocock/skills/tree/main/skills/engineering/pr) skill. That skill asks for a short summary diagram, before-and-after evidence, and the blast radius of the merge. The agent publishes the pull requests ready for review, moves the issue to In Review, and requests my review. The same job continues with PR Steward.
 
-All of this is one Agent Run: one job, with one agent that coordinates its subagents and reviewers. I am thinking about splitting the steps across runners instead. Each step would get its own role and start from a clean context. I am not sure yet that it is worth the extra coordination.
+All of this is one Agent Run: one job, with one agent that coordinates its subagents and reviewers. I keep thinking about splitting the steps across runners, so each step gets its own role and a clean context. I'm not sure yet that it's worth the extra coordination.
 
-## PR Steward watches the pull request
+## PR Steward Watches the Pull Request
 
-`pr-steward` is my skill for the time after a pull request opens. It observes each pull request every five minutes and reads the head, base, checks, mergeability, reviews, and threads. It fixes verified CI failures and review defects on the same branch. A finding that needs my decision comes back to me. A thread closes only with a valid disposition.
+`pr-steward` is my skill for the time after a pull request opens. It observes each pull request every five minutes and reads the head, base, checks, mergeability, reviews, and threads. It fixes verified CI failures and review defects on the same branch. A finding that needs my decision comes back to me. Every finding needs an answer before its thread closes: a fix, a reason why no change is needed, or my decision.
 
 Codex Review and Codex Security also run on GitHub when a pull request opens. They give each change one more fresh review. PR Steward waits for the reviews that are queued and treats their findings like any other.
 
-An observation is clean when the checks pass, the branch is mergeable, and every finding has a permitted disposition. The quiet gate passes after three clean observations in a row. A new commit, check result, review, or decision resets the count. A branch that is only behind `main` keeps its count, so the agent does not rebase and restart CI without a reason.
+An observation is clean when the checks pass, the branch is mergeable, and every finding has an answer. The quiet gate passes after three clean observations in a row. A new commit, check result, review, or decision resets the count. A branch that is only behind `main` keeps its count, so the agent doesn't rebase and restart CI without a reason.
 
-After the quiet gate passes, the agent writes one handoff comment on the issue. The comment lists the pull requests, exact heads and bases, checks, review dispositions, and observation times. It names the acceptance work that remains. It ends with a short retro from Matt's [`retro`](https://github.com/mattpocock/skills/tree/main/skills/engineering/retro) skill, which suggests improvements to the agent's environment. Then the agent removes `agent:run` and the job ends.
+After the quiet gate passes, the agent writes one handoff comment on the issue. The comment lists the pull requests, exact heads and bases, checks, review decisions, and observation times. It names the acceptance work that remains. It ends with a short retro from Matt's [`retro`](https://github.com/mattpocock/skills/tree/main/skills/engineering/retro) skill, which suggests improvements to the agent's environment. Then the agent removes `agent:run` and the job ends.
 
 I review the pull requests and squash-merge them myself. The agent never merges, enables auto-merge, or adds `agent:run`. If I leave feedback on a pull request, I add the label again. The issue is In Review with an Agent Run pull request, so the launcher resumes. PR Steward addresses the feedback, waits for the quiet gate again, and writes a new handoff.
 
-## Recovery starts from what still exists
+## Recovery Starts From What Still Exists
 
 A long run can stop before it finishes. A runner can restart, a job can fail, or I can cancel it in GitHub Actions. A stopped run keeps its label and Project status, so the issue still shows unfinished work.
 
@@ -145,23 +141,31 @@ A long run can stop before it finishes. A runner can restart, a job can fail, or
   <figcaption className="md:hidden">Scroll sideways to read the full diagram on a phone.</figcaption>
 </figure>
 
-Each issue has its own permanent copy of the repository on the Mac Studio. The agent's branches and commits live there, including the ones it has not pushed yet. A cancelled job or a replaced runner leaves that work in place.
+Each issue has its own permanent copy of the repository on the Mac Studio. The agent's branches and commits live there, including the ones it hasn't pushed yet. A cancelled job or a replaced runner leaves that work in place.
 
 To continue, I rerun the job, or the hourly sweep finds the labelled issue. The agent looks at the existing branches, commits, and pull requests first. Then it continues from where the last run stopped.
 
-## The feature ends with acceptance
+## The Factory Can Outgrow One Machine
 
-A handoff means the pull requests are stable. The feature still needs acceptance. During the run, the agent verifies its work against the acceptance criteria in the issue. Tests, checks, and reviews cover what it can verify itself. The handoff names what it could not verify, and I check those parts by hand.
+The runners are ordinary self-hosted GitHub Actions runners, so the factory can move or scale beyond my Mac Studio. When I need more compute, I can add more machines to the local stack. Linux machines would work too, with the agent CLIs installed and logged in. The launcher and the skills would stay almost the same, and the workflow would need new runner labels. The catch is the permanent copy of each issue: it lives on one machine, so a resumed run must return there to see unpushed work.
 
-The spec stays open until every written requirement has evidence. Each one is passed, failed, blocked, or not tested. Today, planning, review, and QA are where the factory needs me most.
+Several cloud providers also offer runners that work with GitHub Actions. Their per-minute pricing may not make sense for agent runs, even for personal work. A run can take hours, and the runner spends most of that time waiting on the model and on PR Steward. A machine I already own costs nothing extra while it waits. Cloud runners would also need a safe way to hold my agent logins.
 
-## What I want to improve next
+## The Feature Ends With Acceptance
 
-Those three stages are the next steps up the ladder. These are the improvements I can see today:
+A handoff means the pull requests are stable. The feature still needs acceptance. During the run, the agent verifies its work against the acceptance criteria in the issue. Tests, checks, and reviews cover what it can verify itself. The handoff names what it couldn't verify, and I check those parts by hand.
 
-1. **Full-spec QA by the agent.** The agent should check the complete spec. My part is to give it a verification method for each requirement, so it can continue without me.
-2. **Less human code review.** In an ideal world, I would skip most code review. First, I want shorter pull request bodies and agent comments. The `pr` skill gives a good structure, but its output is still too verbose for me. After I watch that for a while, I may automate approval in increments, starting with a small blast radius. Changes to agent infrastructure, such as skills and `AGENTS.md`, still need my full review.
-3. **Data from the runs.** Run data is scattered today, across GitHub Actions logs, each agent's session transcripts, and handoff comments. I want to turn it into analytics and observability data that I can understand and even benchmark. When I have that, the whole system will make much more sense.
-4. **The shape of the flow.** Automated QA may not need a separate flow. Maybe each step should get its own runner, with its own role and a clean context. Maybe not. I could also run `retro` in a more automated way, so its findings become issues directly. An agent could grill those issues, and the sensible ones could go straight into the factory.
+Each written requirement ends up as passed, failed, blocked, or not tested, and the spec stays open until its deliverable passes. Today, planning, my own code review, and QA are where the factory needs me most.
 
-I still review the pull requests, and I can stop or revise the work at any point. This setup is one snapshot of a moving target. Models, tools, and practices change every few weeks, and each change can move the next step within reach. I keep the factory lean, revisit it often, and expect its next version to look different.
+## What I Want to Improve Next
+
+So, what comes next? These are the improvements I can see today:
+
+1. **Full-spec QA by the agent:** The agent should check the complete spec. My part is to give it a verification method for each requirement, so it can continue without me.
+2. **Less human code review:** In an ideal world, I would skip most code review. First, I want shorter pull request bodies and agent comments. The `pr` skill gives a good structure, but its output is still too verbose for me. After I watch that for a while, I may automate approval in increments, starting with a small blast radius. Changes to agent infrastructure, such as skills and `AGENTS.md`, still need my full review.
+3. **Data from the runs:** Run data is scattered today, across GitHub Actions logs, each agent's session transcripts, and handoff comments. I want to turn it into analytics and observability data that I can understand and even benchmark. When I have that, the whole system will make much more sense.
+4. **The shape of the flow:** Automated QA may not need a separate flow. Maybe each step should get its own runner, with its own role and a clean context. Maybe not. I could also run `retro` in a more automated way, so its findings become issues directly. An agent could grill those issues, and the sensible ones could go straight into the factory.
+
+So, where does that leave me? I still review the pull requests, and I can stop or revise the work at any point. This setup is one snapshot of a moving target. Models, tools, and practices change every few weeks, and each change can move the next step within reach. I keep the factory lean, revisit it often, and expect its next version to look different.
+
+Last year, I wondered if this kind of infrastructure could be challenging and fun. So far, I think it is. The factory may run without me, but the decisions are still mine.
