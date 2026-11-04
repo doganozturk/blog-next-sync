@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="690" viewBox="0 0 1200 690" role="img" aria-labelledby="title desc">
+  <title id="title">How the launcher decides</title>
+  <desc id="desc">An agent:run label event or the hourly sweep starts the Agent Pipeline workflow on a self-hosted Mac Studio runner. The launcher reads the issue, its Project status, and open pull requests. It checks that the owner or the bot added the label, that the issue is not a child ticket, its status, and its open blockers. An issue in Todo runs; an issue in In Review with Agent Run pull requests resumes; other issues are skipped with a comment. A run selects the implementer, prepares the permanent issue clone, and starts do-the-thing.</desc>
+  <rect width="1200" height="690" rx="28" fill="#f7f8f5"/>
+  <text x="50" y="61" fill="#122236" font-family="Arial, sans-serif" font-size="32" font-weight="700">One thin launcher</text>
+  <text x="50" y="93" fill="#536273" font-family="Arial, sans-serif" font-size="18">GitHub evidence decides each time: run, resume, or skip.</text>
+
+  <rect x="50" y="125" width="1100" height="133" rx="19" fill="#e9f0fc"/>
+  <text x="75" y="158" fill="#254f91" font-family="Arial, sans-serif" font-size="18" font-weight="700">1 · TRIGGER AND READ</text>
+  <g font-family="Arial, sans-serif" text-anchor="middle">
+    <rect x="75" y="178" width="290" height="57" rx="12" fill="#fff" stroke="#aec3e7" stroke-width="2"/>
+    <text x="220" y="213" fill="#122236" font-size="19" font-weight="700">Label or hourly sweep</text>
+    <rect x="455" y="178" width="290" height="57" rx="12" fill="#fff" stroke="#aec3e7" stroke-width="2"/>
+    <text x="600" y="213" fill="#122236" font-size="19" font-weight="700">Read issue and status</text>
+    <rect x="835" y="178" width="290" height="57" rx="12" fill="#fff" stroke="#aec3e7" stroke-width="2"/>
+    <text x="980" y="213" fill="#122236" font-size="19" font-weight="700">Read open Agent Run PRs</text>
+  </g>
+  <g fill="none" stroke="#54709a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M377 207h66m-10-9 10 9-10 9"/>
+    <path d="M757 207h66m-10-9 10 9-10 9"/>
+    <path d="M980 258v17H220v71"/>
+  </g>
+
+  <rect x="50" y="291" width="1100" height="144" rx="19" fill="#fff2df"/>
+  <text x="75" y="324" fill="#8a5c19" font-family="Arial, sans-serif" font-size="18" font-weight="700">2 · DECIDE</text>
+  <g font-family="Arial, sans-serif" text-anchor="middle">
+    <rect x="75" y="346" width="290" height="65" rx="12" fill="#fff" stroke="#e3c995" stroke-width="2"/>
+    <text x="220" y="374" fill="#122236" font-size="19" font-weight="700">Check who and what</text>
+    <text x="220" y="398" fill="#536273" font-size="16">owner or bot · spec, not ticket</text>
+    <rect x="455" y="346" width="290" height="65" rx="12" fill="#fff" stroke="#e3c995" stroke-width="2"/>
+    <text x="600" y="374" fill="#122236" font-size="19" font-weight="700">Check the status</text>
+    <text x="600" y="398" fill="#536273" font-size="16">Todo runs · In Review resumes</text>
+    <rect x="835" y="346" width="290" height="65" rx="12" fill="#fff" stroke="#e3c995" stroke-width="2"/>
+    <text x="980" y="374" fill="#122236" font-size="19" font-weight="700">Check blockers</text>
+    <text x="980" y="398" fill="#536273" font-size="16">open blocker · keep label, wait</text>
+  </g>
+  <g fill="none" stroke="#a37b3c" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M377 378h66m-10-9 10 9-10 9"/>
+    <path d="M757 378h66m-10-9 10 9-10 9"/>
+    <path d="M980 435v16H220v69"/>
+  </g>
+
+  <rect x="50" y="467" width="1100" height="144" rx="19" fill="#e8f4ec"/>
+  <text x="75" y="500" fill="#246b45" font-family="Arial, sans-serif" font-size="18" font-weight="700">3 · START</text>
+  <g font-family="Arial, sans-serif" text-anchor="middle">
+    <rect x="75" y="520" width="290" height="65" rx="12" fill="#fff" stroke="#a8d3b7" stroke-width="2"/>
+    <text x="220" y="548" fill="#122236" font-size="19" font-weight="700">Select the implementer</text>
+    <text x="220" y="572" fill="#536273" font-size="16">Codex by default · or a label</text>
+    <rect x="455" y="520" width="290" height="65" rx="12" fill="#fff" stroke="#a8d3b7" stroke-width="2"/>
+    <text x="600" y="548" fill="#122236" font-size="19" font-weight="700">Prepare the issue clone</text>
+    <text x="600" y="572" fill="#536273" font-size="16">permanent · fresh main</text>
+    <rect x="835" y="520" width="290" height="65" rx="12" fill="#fff" stroke="#a8d3b7" stroke-width="2"/>
+    <text x="980" y="548" fill="#122236" font-size="19" font-weight="700">Start do-the-thing</text>
+    <text x="980" y="572" fill="#536273" font-size="16">works as the bot account</text>
+  </g>
+  <g fill="none" stroke="#4b8460" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M377 552h66m-10-9 10 9-10 9"/>
+    <path d="M757 552h66m-10-9 10 9-10 9"/>
+  </g>
+  <text x="50" y="654" fill="#536273" font-family="Arial, sans-serif" font-size="17">One job per spec. Separate issues run in parallel on the Mac Studio runners.</text>
+</svg>

@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="590" viewBox="0 0 1200 590" role="img" aria-labelledby="title desc">
+  <title id="title">GitHub records the feature and its delivery</title>
+  <desc id="desc">A spec issue with the agent:run label contains an accepted specification and three child tickets. Ticket B depends on Ticket A, so pull request B is stacked on pull request A. Ticket C is independent and gets its own pull request against main. The spec retains its integrated acceptance criteria.</desc>
+  <rect width="1200" height="590" rx="28" fill="#f7f8f5"/>
+  <text x="50" y="62" fill="#122236" font-family="Arial, sans-serif" font-size="32" font-weight="700">GitHub holds scope, authority, and delivery</text>
+  <text x="50" y="94" fill="#536273" font-family="Arial, sans-serif" font-size="18">Issues show approved scope and dependencies; pull requests show delivery evidence.</text>
+
+  <rect x="50" y="130" width="1100" height="100" rx="18" fill="#254f91"/>
+  <text x="78" y="169" fill="#ffffff" font-family="Arial, sans-serif" font-size="23" font-weight="700">Spec issue</text>
+  <text x="78" y="202" fill="#e2ebf9" font-family="Arial, sans-serif" font-size="18">Accepted specification · owner decisions · integrated acceptance</text>
+  <rect x="908" y="156" width="210" height="47" rx="23" fill="#e8f0fc"/>
+  <text x="1013" y="186" fill="#254f91" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="700">agent:run</text>
+
+  <g fill="none" stroke="#7d91a7" stroke-width="3" stroke-linecap="round">
+    <path d="M600 230v37H220v25"/>
+    <path d="M600 230v62"/>
+    <path d="M600 267h380v25"/>
+  </g>
+  <g font-family="Arial, sans-serif">
+    <rect x="50" y="292" width="340" height="170" rx="18" fill="#ffffff" stroke="#b9c8d8" stroke-width="2"/>
+    <text x="77" y="332" fill="#122236" font-size="23" font-weight="700">Ticket A</text>
+    <text x="77" y="364" fill="#536273" font-size="18">Shared styling</text>
+    <rect x="77" y="389" width="170" height="42" rx="21" fill="#fff1d9"/>
+    <text x="162" y="416" fill="#815818" text-anchor="middle" font-size="17" font-weight="700">Stack layer 1</text>
+
+    <rect x="430" y="292" width="340" height="170" rx="18" fill="#ffffff" stroke="#b9c8d8" stroke-width="2"/>
+    <text x="457" y="332" fill="#122236" font-size="23" font-weight="700">Ticket B</text>
+    <text x="457" y="364" fill="#536273" font-size="18">Article layout · needs A</text>
+    <rect x="457" y="389" width="170" height="42" rx="21" fill="#fff1d9"/>
+    <text x="542" y="416" fill="#815818" text-anchor="middle" font-size="17" font-weight="700">Stack layer 2</text>
+
+    <rect x="810" y="292" width="340" height="170" rx="18" fill="#ffffff" stroke="#b9c8d8" stroke-width="2"/>
+    <text x="837" y="332" fill="#122236" font-size="23" font-weight="700">Ticket C</text>
+    <text x="837" y="364" fill="#536273" font-size="18">Independent header fix</text>
+    <rect x="837" y="389" width="170" height="42" rx="21" fill="#e8f4ec"/>
+    <text x="922" y="416" fill="#246b45" text-anchor="middle" font-size="17" font-weight="700">Own PR</text>
+  </g>
+  <g fill="none" stroke="#7d91a7" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M390 355h28m-9-8 9 8-9 8"/>
+    <path d="M220 462v36"/>
+    <path d="M600 462v36"/>
+    <path d="M980 462v36"/>
+  </g>
+  <g font-family="Arial, sans-serif" text-anchor="middle" font-size="18" font-weight="700">
+    <rect x="75" y="499" width="290" height="54" rx="12" fill="#e9edf2"/>
+    <text x="220" y="533" fill="#122236">PR A · base main</text>
+    <rect x="455" y="499" width="290" height="54" rx="12" fill="#e9edf2"/>
+    <text x="600" y="533" fill="#122236">PR B · base PR A</text>
+    <rect x="835" y="499" width="290" height="54" rx="12" fill="#e9edf2"/>
+    <text x="980" y="533" fill="#122236">PR C · base main</text>
+  </g>
+  <text x="50" y="580" fill="#536273" font-family="Arial, sans-serif" font-size="16">One run delivers the full ticket graph; a small fix needs only one existing issue.</text>
+</svg>
