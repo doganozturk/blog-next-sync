@@ -30,7 +30,11 @@ export function PostSummaryListItem({
   const locale = lang === "tr" ? Locale.tr : Locale.en;
 
   return (
-    <Link href={toPostRoute(permalink)} className="transition-colors duration-300 ease-in-out motion-reduce:transition-none group relative block border-b border-stone-200 py-6 first:pt-0 last:border-0 dark:border-stone-800 md:py-8">
+    <Link
+      href={toPostRoute(permalink)}
+      prefetch={false}
+      className="transition-colors duration-300 ease-in-out motion-reduce:transition-none group relative block border-b border-stone-200 py-6 first:pt-0 last:border-0 dark:border-stone-800 md:py-8"
+    >
       <h2 className="transition-colors duration-300 ease-in-out motion-reduce:transition-none text-stone-900 dark:text-stone-50 flex items-center gap-2 font-serif text-2xl font-normal leading-tight tracking-tight group-hover:text-orange-700 group-focus-visible:text-orange-700 dark:group-hover:text-orange-500 dark:group-focus-visible:text-orange-500 md:text-3xl">
         {title}
         <span className="inline-block shrink-0 text-lg opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 motion-safe:transition-opacity" aria-hidden="true">

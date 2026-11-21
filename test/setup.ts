@@ -25,10 +25,12 @@ mock.module("next/link", () => ({
   default: ({
     href,
     children,
+    prefetch: _prefetch,
     ...props
   }: {
     href: string;
     children: React.ReactNode;
+    readonly prefetch?: boolean | "auto" | null;
     [key: string]: unknown;
   }) => {
     // eslint-disable-next-line @typescript-eslint/no-require-imports
